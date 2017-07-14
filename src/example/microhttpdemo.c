@@ -1,3 +1,7 @@
+/*
+ * To compile: cc microhttpdemo.c -lmicrohttpd -o microhttpdemo
+ */
+
 #include <microhttpd.h>
 #include <stdlib.h>
 #include <string.h>
