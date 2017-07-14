@@ -46,20 +46,20 @@ void init() {
 	//          //  ecl_call("(export foo)");
 	//          //  ecl_call("(export bar)");
 	//          //  ecl_call("(in-package common-lisp-user)");
-	//          }
-	//
-	//          int main() {
-	//              init();
-	//                  cl_object exit_obj = c_string_to_object(":EXIT");
-	//                      cl_object result = Cnil;
-	//
-	//                          while (cl_equal(exit_obj, result) == Cnil) {
-	//                                  printf("\n> ");
-	//                                          cl_object form = ecl_call("(read)");
-	//                                                  result = cl_safe_eval(form, Cnil, Cnil);
-	//                                                          cl_print(1, result);
-	//                                                              }
-	//                                                                  putchar('\n');
-	//
-	//                                                                      return 0;
-	//                                                                      }
+}
+
+int main() {
+	init();
+	cl_object exit_obj = c_string_to_object(":EXIT");
+	cl_object result = Cnil;
+
+	while (cl_equal(exit_obj, result) == Cnil) {
+		printf("\n> ");
+		cl_object form = ecl_call("(read)");
+		result = cl_safe_eval(form, Cnil, Cnil);
+		cl_print(1, result);
+	}
+	putchar('\n');
+
+	return 0;
+}
