@@ -12,3 +12,5 @@ References:
 - [libmicrohttpd](https://www.gnu.org/software/libmicrohttpd/)
 
 - [libyaml](http://pyyaml.org/wiki/LibYAML)
+
+- [mustach](https://gitlab.com/jobol/mustach)
