@@ -17,7 +17,7 @@
 #
 
 # Initialize project settings
-AC_INIT([automaton], [0.1.0], [ramage.lucas94@gmail.com])
+AC_INIT([automaton], [0.1.0], [ramage.lucas@openmailbox.org])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
 AC_CONFIG_SRCDIR([src/main.c])
