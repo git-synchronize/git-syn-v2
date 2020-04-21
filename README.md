@@ -39,3 +39,4 @@ SPDX-License-Identifier: [GPL-2.0-or-later](COPYING)
 
 - [Git Large File Storage (LFS)](https://git-lfs.github.com)
 
+- [GitLab Repository Mirroring](https://docs.gitlab.com/ee/user/project/repository/repository_mirroring.html)
