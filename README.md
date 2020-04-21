@@ -2,4 +2,11 @@
 
 _Event-driven git remote repository syncing_
 
-See [COPYING](COPYING) file for copyright and license details.
+## Dependencies
+
+- [libgit2](https://libgit2.org)
+- [libuv](https://libuv.org)
+
+## License
+
+SPDX-License-Identifier: [GPL-2.0-or-later](COPYING)
