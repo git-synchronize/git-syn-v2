@@ -58,6 +58,9 @@ int main(int argc, char **argv)
         }
     }
 
+    (void) install_extension;
+    (void) monitor_repository;
+
     parse_config();
 
     exit(EXIT_SUCCESS);

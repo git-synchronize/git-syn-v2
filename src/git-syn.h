@@ -18,6 +18,7 @@
 #endif
 
 #define PROGRAM_NAME "git-syn"
+#define PROGRAM_DESCRIPTION "Event-driven git remote repository syncing."
 
 void parse_config();
 
