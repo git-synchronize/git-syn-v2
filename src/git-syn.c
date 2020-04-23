@@ -10,15 +10,17 @@
  *
  */
 
+#include <getopt.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <getopt.h>
 #include <string.h>
 
 #include "git-syn.h"
 
 int main(int argc, char **argv)
 {
+    bool install_extension = false, monitor_repository = false;
     int opt;
     static struct option long_options[] = {
         {"help", no_argument, 0, 'h'},
@@ -26,7 +28,7 @@ int main(int argc, char **argv)
         {0, 0, 0, 0}
     };
 
-    while (1) {
+    while (true) {
         int option_index = 0;
         opt = getopt_long(argc, argv, "h0", long_options, &option_index);
 
@@ -35,27 +37,28 @@ int main(int argc, char **argv)
 
         switch (opt) {
         case 'h':
-            print_usage();
+            print_usage(EXIT_SUCCESS);
             break;
         case 0:
             if (strcmp(long_options[option_index].name, "help") == 0)
-                print_usage();
+                print_usage(EXIT_SUCCESS);
             if (strcmp(long_options[option_index].name, "version") == 0)
-                print_version();
+                print_version(EXIT_SUCCESS);
             break;
         case '?':
-            print_usage();
-            exit(EXIT_FAILURE);
+            print_usage(EXIT_FAILURE);
         }
     }
 
     for (; optind < argc; optind++) {
         if (strcmp(argv[optind], "install") == 0) {
-            printf("not yet implemented\n");
+            install_extension = true;
         } else if (strcmp(argv[optind], "monitor") == 0) {
-            printf("not yet implemented\n");
+            monitor_repository = true;
         }
     }
+
+    parse_config();
 
     exit(EXIT_SUCCESS);
 }

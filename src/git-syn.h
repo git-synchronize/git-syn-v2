@@ -17,10 +17,12 @@
 #define VERSION "0.0.1"
 #endif
 
+#define PROGRAM_NAME "git-syn"
+
 void parse_config();
 
-void print_usage();
+void print_usage(int status);
 
-void print_version();
+void print_version(int status);
 
 #endif /* GIT_SYN_H */

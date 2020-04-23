@@ -11,15 +11,18 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "git-syn.h"
 
-void print_usage()
+void print_usage(int status)
 {
-    printf("Usage:\n\tgit-syn [option] ... [command]\n");
+    printf("Usage:\n\t%s [option] ... [command] ...\n", PROGRAM_NAME);
+    exit(status);
 }
 
-void print_version()
+void print_version(int status)
 {
-    printf("git-syn version %s\n", VERSION);
+    printf("%s version %s\n", PROGRAM_NAME, VERSION);
+    exit(status);
 }
