@@ -2,6 +2,8 @@
 
 _Event-driven git remote repository syncing._
 
+Git SYN is a command line extension for synchronizing Git remote repositories.
+
 ## Dependencies
 
 - [check](https://libcheck.github.io/check)
