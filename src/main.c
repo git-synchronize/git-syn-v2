@@ -25,18 +25,17 @@ int main(int argc, char *argv[])
         switch (opt) {
         case 'h':
             print_usage();
-	    break;
+            break;
         case '?':
-	    print_usage();
-	    exit(EXIT_FAILURE);
+            print_usage();
+            exit(EXIT_FAILURE);
         }
     }
 
     for (; optind < argc; optind++) {
         if (strcmp(argv[optind], "install") == 0) {
             printf("not yet implemented\n");
-        }
-        else if (strcmp(argv[optind], "monitor") == 0) {
+        } else if (strcmp(argv[optind], "monitor") == 0) {
             printf("not yet implemented\n");
         }
     }
