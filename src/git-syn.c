@@ -19,30 +19,41 @@
 
 int main(int argc, char **argv)
 {
-    int c;
+    int opt;
+    static struct option long_options[] = {
+        {"help", no_argument, 0, 'h'},
+        {"version", no_argument, 0, 0},
+        {0, 0, 0, 0}
+    };
 
     while (1) {
         int option_index = 0;
-        static struct option long_options[] = {
-            { "help", no_argument, 0, 0 },
-            { "version", no_argument, 0, 0 },
-            { 0, 0, 0, 0 }
-        };
+        opt = getopt_long(argc, argv, "h0", long_options, &option_index);
 
-        c = getopt_long(argc, argv, "0", long_options, &option_index);
-
-        if (c == -1)
+        if (opt == -1)
             break;
 
-        switch (c) {
+        switch (opt) {
+        case 'h':
+            print_usage();
+            break;
         case 0:
             if (strcmp(long_options[option_index].name, "help") == 0)
                 print_usage();
             if (strcmp(long_options[option_index].name, "version") == 0)
                 print_version();
             break;
-        default:
+        case '?':
+            print_usage();
             exit(EXIT_FAILURE);
+        }
+    }
+
+    for (; optind < argc; optind++) {
+        if (strcmp(argv[optind], "install") == 0) {
+            printf("not yet implemented\n");
+        } else if (strcmp(argv[optind], "monitor") == 0) {
+            printf("not yet implemented\n");
         }
     }
 

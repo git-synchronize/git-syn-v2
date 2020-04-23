@@ -9,7 +9,7 @@ BIN_DIR = ${PREFIX}/bin
 
 SRC_DIR = ./src
 
-SRC = ${SRC_DIR}/main.c
+SRC = ${SRC_DIR}/git-syn.c
 SRC += ${SRC_DIR}/usage.c
 SRC += ${SRC_DIR}/config.c
 
