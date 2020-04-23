@@ -10,7 +10,33 @@
  *
  */
 
-int main(void)
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "syn.h"
+
+int main(int argc, char *argv[])
 {
-  return 0;
+    int opt;
+
+    while ((opt = getopt(argc, argv, "h")) != -1) {
+        switch (opt) {
+        case 'h':
+            print_usage();
+	    break;
+        case '?':
+	    print_usage();
+	    exit(EXIT_FAILURE);
+        }
+    }
+
+    for (; optind < argc; optind++) {
+        if (strcmp(argv[optind], "install") == 0) {
+            printf("not yet implemented\n");
+        }
+    }
+
+    exit(EXIT_SUCCESS);
 }

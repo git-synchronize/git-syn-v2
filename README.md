@@ -26,6 +26,12 @@ make
 git syn install
 ```
 
+## Usage
+
+```sh
+git syn -h
+```
+
 ## License
 
 SPDX-License-Identifier: [GPL-2.0-or-later](COPYING)
