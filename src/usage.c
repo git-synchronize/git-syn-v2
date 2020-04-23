@@ -17,7 +17,8 @@
 
 void print_usage(int status)
 {
-    printf("Usage:\n\t%s [option] ... [command] ...\n%s\n", PROGRAM_NAME, PROGRAM_DESCRIPTION);
+    printf("Usage:\n\t%s [option] ... [command] ...\n%s\n", PROGRAM_NAME,
+           PROGRAM_DESCRIPTION);
     exit(status);
 }
 

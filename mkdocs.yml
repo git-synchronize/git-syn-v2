@@ -1,0 +1,13 @@
+site_name: git-syn
+site_author: Lucas Ramage
+site_description: |
+  Event-driven git remote repository syncing.
+
+theme:
+  name: readthedocs
+
+docs_dir: doc
+
+repo_url: https://gitlab.com/oxr463/git-syn.git
+edit_uri: ""
+

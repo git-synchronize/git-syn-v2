@@ -23,13 +23,16 @@ make
 ## Installation
 
 ```sh
-git syn install
+sudo make install
 ```
 
 ## Usage
 
 ```sh
 git syn -h
+Usage:
+        git-syn [option] ... [command] ...
+	Event-driven git remote repository syncing.
 ```
 
 ## License
