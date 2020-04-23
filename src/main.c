@@ -36,6 +36,9 @@ int main(int argc, char *argv[])
         if (strcmp(argv[optind], "install") == 0) {
             printf("not yet implemented\n");
         }
+        else if (strcmp(argv[optind], "monitor") == 0) {
+            printf("not yet implemented\n");
+        }
     }
 
     exit(EXIT_SUCCESS);
