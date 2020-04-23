@@ -1,12 +1,6 @@
-# git-syn
+# Git Synchronize
 
-_Event-driven git remote repository syncing_
-
-## About
-
-> SYN - Synchronise
-
-See: [Transmission Control Protocol - Wikipedia](https://en.wikipedia.org/wiki/Transmission_Control_Protocol#Connection_establishment)
+_Event-driven git remote repository syncing._
 
 ## Dependencies
 
