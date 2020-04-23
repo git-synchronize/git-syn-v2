@@ -10,9 +10,17 @@
  *
  */
 
-#ifndef GIT_SYN
-#define GIt_SYN
+#ifndef GIT_SYN_H
+#define GIT_SYN_H
+
+#ifndef VERSION
+#define VERSION "0.0.1"
+#endif
+
+void parse_config();
 
 void print_usage();
 
-#endif
+void print_version();
+
+#endif /* GIT_SYN_H */

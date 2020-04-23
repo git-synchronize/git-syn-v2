@@ -10,16 +10,24 @@
  *
  */
 
-#include <stdio.h>
+#include <git2.h>
 
 #include "git-syn.h"
 
-void print_usage()
+void parse_config()
 {
-    printf("Usage:\n\tgit-syn [option] ... [command]\n");
-}
+    git_buf *path = NULL;
+    int error;
 
-void print_version()
-{
-    printf("git-syn version %s\n", VERSION);
+    git_libgit2_init();
+
+    error = git_config_find_global(path);
+    error = git_config_find_xdg(path);
+    error = git_config_find_system(path);
+
+    git_config *cfg = NULL;
+
+    error = git_config_open_default(&cfg);
+
+    (void) error;
 }
