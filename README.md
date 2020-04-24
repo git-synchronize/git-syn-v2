@@ -27,9 +27,19 @@ sudo make install
 
 ```sh
 git syn -h
-Usage:
-        git-syn [option] ... [command] ...
-	Event-driven git remote repository syncing.
+Usage: git-syn [option] ... [command] ...
+
+Event-driven git remote repository syncing.
+
+  -h, --help       display this help and exit
+  -v, --version    output version information and exit
+  install          install extension to repository
+  uninstall        remove extension from repository
+  monitor          view or enable/disable repository sync
+
+Git SYN online help: <https://gitlab.com/oxr463/git-syn>
+Full documentation <https://oxr463.gitlab.io/git-syn>
+or available locally via: man git-syn
 ```
 
 ## License
