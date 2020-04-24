@@ -14,7 +14,9 @@ repo_url: https://gitlab.com/oxr463/git-syn.git
 
 nav:
   - Introduction: index.md
-  - Manual: man/git_syn.1.md
+  - Manual:
+    - Commands:
+      - "git-syn": man/git-syn.1.md
 
 copyright: Copyright &copy; 2019-2020 Lucas Ramage.
 
