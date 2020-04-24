@@ -10,24 +10,29 @@
  *
  */
 
-#include <git2.h>
+#include <git2/global.h>
+#include <git2/config.h>
 
 #include "git-syn.h"
 
 void parse_config()
 {
-    git_buf *path = NULL;
+    git_buf path = { 0 };
+
     int error;
 
     git_libgit2_init();
 
-    error = git_config_find_global(path);
-    error = git_config_find_xdg(path);
-    error = git_config_find_system(path);
+    error = git_config_find_global(&path);
+    error = git_config_find_xdg(&path);
+    error = git_config_find_system(&path);
 
     git_config *cfg = NULL;
 
     error = git_config_open_default(&cfg);
 
     (void) error;
+
+    git_buf_dispose(&path);
+    git_libgit2_shutdown();
 }

@@ -18,8 +18,8 @@ MAN_SRC = ${DOC_DIR}/man/${PROGRAM_NAME}.1.md
 SRC_DIR = ./src
 
 SRC = ${SRC_DIR}/${PROGRAM_NAME}.c
-SRC += ${SRC_DIR}/usage.c
 SRC += ${SRC_DIR}/config.c
+SRC += ${SRC_DIR}/usage.c
 
 CFLAGS += -fPIE -fno-stack-protector -Wall -Wextra -O2
 LDFLAGS += -lgit2
