@@ -10,3 +10,6 @@ RUN apk update && apk add \
 
 WORKDIR /usr/src/git-syn
 COPY . /usr/src/git-syn
+
+RUN make && \
+    make install
