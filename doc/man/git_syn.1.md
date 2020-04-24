@@ -4,23 +4,37 @@ git-syn - event-driven remote repository syncing
 
 # SYNOPSIS
 
-**git-syn** [-h] [--help] [install] [monitor]
+**git-syn** [option] ... [command] ...
 
 # DESCRIPTION
 
-This command ...
+Git SYN is a command line extension for synchronizing Git remote repositories.
 
-**-h**
+# OPTIONS
 
-**--help**
+**-h, --help**
 
 :   A simple one-line usage display.
 
-**-v**
+**-v, --version**
 
-**--version**
+:   Prints the version number.
 
-:   Prints the version number and exits.
+# COMMANDS
+
+Currently, Git SYN only contains high level ("porcelain") commands.
+
+**git-syn-install(1)**
+
+:   Install Git SYN configuration.
+
+**git-syn-uninstall(1)**
+
+:   Remove Git SYN configuration.
+
+**git-syn-monitor(1)**
+
+:   View or enable/disable Git SYN repository syncing.
 
 # EXIT STATUS
 
@@ -29,7 +43,7 @@ Returns zero on success, errno values on failure.
 # NOTES
 
 The git-syn project site, with more information and the source code
-repository, can be found at https://gitlab.com/oxr463/git-syn. This
+repository, can be found at <https://gitlab.com/oxr463/git-syn>. This
 tool is currently under development,
 please report any bugs at the project site or directly to the author.
 

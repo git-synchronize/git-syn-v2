@@ -6,9 +6,10 @@ Git SYN is a command line extension for synchronizing Git remote repositories.
 
 ## Dependencies
 
-- [check](https://libcheck.github.io/check)
+- [check](https://libcheck.github.io/check) (optional)
 - [libgit2](https://libgit2.org)
 - [libuv](https://libuv.org)
+- [pandoc](https://pandoc.org) (optional)
 
 ## Compiling
 
@@ -45,3 +46,4 @@ SPDX-License-Identifier: [GPL-2.0-or-later](COPYING)
 - [Git Large File Storage (LFS)](https://git-lfs.github.com)
 
 - [GitLab Repository Mirroring](https://docs.gitlab.com/ee/user/project/repository/repository_mirroring.html)
+

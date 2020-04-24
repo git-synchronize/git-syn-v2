@@ -1,13 +1,23 @@
-site_name: git-syn
+site_name: Git Synchronize
 site_author: Lucas Ramage
 site_description: |
   Event-driven git remote repository syncing.
 
 theme:
   name: readthedocs
+  custom_dir: doc/theme
 
 docs_dir: doc
+site_dir: public
 
 repo_url: https://gitlab.com/oxr463/git-syn.git
-edit_uri: ""
+
+nav:
+  - Introduction: index.md
+  - Manual: man/git_syn.1.md
+
+copyright: Copyright &copy; 2019-2020 Lucas Ramage.
+
+plugins: 
+  - search
 
