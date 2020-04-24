@@ -3,9 +3,15 @@ INDENT = indent
 INSTALL = /usr/bin/install
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_DATA = ${INSTALL} -m 644
+PANDOC = pandoc
 
 PREFIX = /usr/local
 BIN_DIR = ${PREFIX}/bin
+
+DOC_DIR = ./doc
+MAN_DIR = ${DOC_DIR}/man
+
+MAN = ${MAN_DIR}/git_syn.1.md
 
 SRC_DIR = ./src
 
@@ -34,5 +40,8 @@ reformat:
 install: git-syn
 	${INSTALL_PROGRAM} git-syn ${BIN_DIR}
 
+man:
+	${PANDOC} -s -t man ${MAN} -o git_syn.1
+
 clean: 
-	@rm -f git-syn
+	@rm -f git-syn git_syn.1
