@@ -5,26 +5,28 @@ INSTALL_PROGRAM = ${INSTALL}
 INSTALL_DATA = ${INSTALL} -m 644
 PANDOC = pandoc
 
+PROGRAM_NAME = git-syn
+
 PREFIX = /usr/local
 BIN_DIR = ${PREFIX}/bin
+MAN_DIR = ${PREFIX}/share/man
 
 DOC_DIR = ./doc
-MAN_DIR = ${DOC_DIR}/man
 
-MAN = ${MAN_DIR}/git_syn.1.md
+MAN_SRC = ${DOC_DIR}/man/${PROGRAM_NAME}.1.md
 
 SRC_DIR = ./src
 
-SRC = ${SRC_DIR}/git-syn.c
+SRC = ${SRC_DIR}/${PROGRAM_NAME}.c
 SRC += ${SRC_DIR}/usage.c
 SRC += ${SRC_DIR}/config.c
 
 CFLAGS += -fPIE -fno-stack-protector -Wall -Wextra -O2
 LDFLAGS += -lgit2
 
-all: git-syn
+all: ${PROGRAM_NAME} man
 
-git-syn:
+${PROGRAM_NAME}:
 	${CC} ${CFLAGS} -I${SRC_DIR} -o $@ ${SRC} ${LDFLAGS}
 
 check:
@@ -37,11 +39,14 @@ debug:
 reformat:
 	@VERSION_CONTROL=none ${INDENT} ${SRC}
 
-install: git-syn
-	${INSTALL_PROGRAM} git-syn ${BIN_DIR}
+install: ${PROGRAM_NAME} man
+	${INSTALL_PROGRAM} ${PROGRAM_NAME} ${BIN_DIR}
+	@mkdir -p ${MAN_DIR}
+	${INSTALL_DATA} ${PROGRAM_NAME}.1 ${MAN_DIR}/man1
 
 man:
-	${PANDOC} -s -t man ${MAN} -o git_syn.1
+	${PANDOC} -s -t man ${MAN_SRC} -o ${PROGRAM_NAME}.1
 
 clean: 
-	@rm -f git-syn git_syn.1
+	@rm -f ${PROGRAM_NAME} ${PROGRAM_NAME}.1
+

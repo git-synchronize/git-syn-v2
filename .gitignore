@@ -9,5 +9,6 @@
 *.obj
 *.so
 *.so.*
+*.1
 git-syn
 /public

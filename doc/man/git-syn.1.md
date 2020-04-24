@@ -1,6 +1,10 @@
+% git-syn(1)
+% Lucas Ramage
+% April 24, 2020
+
 # NAME
 
-git-syn - event-driven remote repository syncing
+git-syn - event-driven git remote repository syncing
 
 # SYNOPSIS
 
@@ -14,7 +18,7 @@ Git SYN is a command line extension for synchronizing Git remote repositories.
 
 **-h, --help**
 
-:   A simple one-line usage display.
+:   Prints the command usage instructions.
 
 **-v, --version**
 
@@ -43,11 +47,8 @@ Returns zero on success, errno values on failure.
 # NOTES
 
 The git-syn project site, with more information and the source code
-repository, can be found at <https://gitlab.com/oxr463/git-syn>. This
-tool is currently under development,
-please report any bugs at the project site or directly to the author.
+repository, can be found at <https://gitlab.com/oxr463/git-syn>.
 
-# AUTHOR
-
-Lucas Ramage <ramage.lucas@protonmail.com>
+This tool is currently under development, please report any bugs at
+the project site or directly to the author.
 

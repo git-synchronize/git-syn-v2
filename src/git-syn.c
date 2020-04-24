@@ -21,8 +21,7 @@
 int main(int argc, char **argv)
 {
     bool install_extension = false,
-         remove_extension = false,
-         monitor_repository = false;
+        remove_extension = false, monitor_repository = false;
 
     int opt;
 
