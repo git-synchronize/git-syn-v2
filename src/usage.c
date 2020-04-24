@@ -20,13 +20,13 @@ void print_usage(int status)
     printf("Usage: %s [option] ... [command] ...\n"
            "\n%s\n"
            "\n  -h, --help       display this help and exit"
-	   "\n  -v, --version    output version information and exit"
-	   "\n  install          install extension to repository"
-	   "\n  uninstall        remove extension from repository"
-	   "\n  monitor          view or enable/disable repository sync"
-	   "\n\nGit SYN online help: <https://gitlab.com/oxr463/git-syn>"
-	   "\nFull documentation <https://oxr463.gitlab.io/git-syn>"
-	   "\nor available locally via: man git-syn\n",
+           "\n  -v, --version    output version information and exit"
+           "\n  install          install extension to repository"
+           "\n  uninstall        remove extension from repository"
+           "\n  monitor          view or enable/disable repository sync"
+           "\n\nGit SYN online help: <https://gitlab.com/oxr463/git-syn>"
+           "\nFull documentation <https://oxr463.gitlab.io/git-syn>"
+           "\nor available locally via: man git-syn\n",
            PROGRAM_NAME, PROGRAM_DESCRIPTION);
 
     exit(status);
