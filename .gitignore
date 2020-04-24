@@ -10,3 +10,4 @@
 *.so
 *.so.*
 git-syn
+/public
