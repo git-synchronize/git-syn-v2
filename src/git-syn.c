@@ -20,8 +20,12 @@
 
 int main(int argc, char **argv)
 {
-    bool install_extension = false, monitor_repository = false;
+    bool install_extension = false,
+         remove_extension = false,
+         monitor_repository = false;
+
     int opt;
+
     static struct option long_options[] = {
         {"help", no_argument, 0, 'h'},
         {"version", no_argument, 0, 0},
@@ -53,12 +57,15 @@ int main(int argc, char **argv)
     for (; optind < argc; optind++) {
         if (strcmp(argv[optind], "install") == 0) {
             install_extension = true;
+        } else if (strcmp(argv[optind], "uninstall") == 0) {
+            remove_extension = true;
         } else if (strcmp(argv[optind], "monitor") == 0) {
             monitor_repository = true;
         }
     }
 
     (void) install_extension;
+    (void) remove_extension;
     (void) monitor_repository;
 
     parse_config();
