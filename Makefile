@@ -19,6 +19,7 @@ SRC_DIR = ./src
 
 SRC = ${SRC_DIR}/${PROGRAM_NAME}.c
 SRC += ${SRC_DIR}/config.c
+SRC += ${SRC_DIR}/install.c
 SRC += ${SRC_DIR}/usage.c
 
 CFLAGS += -fPIE -fno-stack-protector -Wall -Wextra -O2

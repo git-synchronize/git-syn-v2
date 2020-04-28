@@ -10,24 +10,19 @@
  *
  */
 
-#ifndef GIT_SYN_H
-#define GIT_SYN_H
+#include <stdio.h>
+#include <stdlib.h>
 
-#ifndef VERSION
-#define VERSION "0.0.1"
-#endif
+#include "git-syn.h"
 
-#define PROGRAM_NAME "git-syn"
-#define PROGRAM_DESCRIPTION "Event-driven git remote repository syncing."
+void install_hooks()
+{
+    printf("Updated git hooks.\n");
+    exit(EXIT_SUCCESS);
+}
 
-void parse_config();
-
-void print_usage(int status);
-
-void print_version(int status);
-
-void install_hooks();
-
-void init_repo();
-
-#endif /* GIT_SYN_H */
+void init_repo()
+{
+    printf("Git SYN initialized.\n");
+    exit(EXIT_SUCCESS);
+}
