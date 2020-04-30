@@ -11,10 +11,14 @@
  */
 
 #include <getopt.h>
+#include <git2.h>
+#include <limits.h>
+#include <sds/sds.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "git-syn.h"
 
@@ -23,13 +27,22 @@ int main(int argc, char **argv)
     bool install_extension = false,
         remove_extension = false, monitor_repository = false;
 
-    int opt;
+    char cwd[PATH_MAX];
+
+    int extension_installed, opt;
 
     static struct option long_options[] = {
         {"help", no_argument, 0, 'h'},
         {"version", no_argument, 0, 'v'},
         {0, 0, 0, 0}
     };
+
+    if (getcwd(cwd, sizeof(cwd)) == NULL) {
+        exit(EXIT_FAILURE);
+    }
+
+
+    sds git_config_env = sdsnew(getenv("GIT_CONFIG"));
 
     while (true) {
         int option_index = 0;
@@ -66,11 +79,24 @@ int main(int argc, char **argv)
         }
     }
 
-    (void) install_extension;
-    (void) remove_extension;
-    (void) monitor_repository;
+    git_libgit2_init();
+
+    (void) git_config_env;
 
     parse_config();
+
+    if (install_extension) {
+        extension_installed = init_repo();
+        if (extension_installed == EXIT_SUCCESS) {
+            printf("Git SYN initialized.\n");
+        }
+    } else if (remove_extension) {
+        printf("Not yet implemented\n");
+    } else if (monitor_repository) {
+        printf("Not yet implemented\n");
+    }
+
+    git_libgit2_shutdown();
 
     exit(EXIT_SUCCESS);
 }

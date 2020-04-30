@@ -10,19 +10,31 @@
  *
  */
 
+#include <git2.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "git-syn.h"
 
-void install_hooks()
+int install_hooks(const char *git_hook_dir)
 {
-    printf("Updated git hooks.\n");
-    exit(EXIT_SUCCESS);
+    int ret = EXIT_FAILURE;
+
+    ret = copy_file(PRE_PUSH_HOOK, git_hook_dir);
+
+    return ret;
 }
 
-void init_repo()
+int init_repo()
 {
-    printf("Git SYN initialized.\n");
-    exit(EXIT_SUCCESS);
+    int ret = EXIT_FAILURE;
+
+    //ret = install_hooks();
+    if (ret == EXIT_SUCCESS) {
+        printf("Updated git hooks.\n");
+        ret = EXIT_SUCCESS;
+    }
+
+    return ret;
 }

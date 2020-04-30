@@ -20,14 +20,18 @@
 #define PROGRAM_NAME "git-syn"
 #define PROGRAM_DESCRIPTION "Event-driven git remote repository syncing."
 
-void parse_config();
+#define PRE_PUSH_HOOK "/usr/local/share/" PROGRAM_NAME "/hook/pre-push.sh"
+
+int copy_file(const char *source, const char *target);
+
+int init_repo();
+
+int install_hooks();
+
+int parse_config();
 
 void print_usage(int status);
 
 void print_version(int status);
-
-void install_hooks();
-
-void init_repo();
 
 #endif /* GIT_SYN_H */

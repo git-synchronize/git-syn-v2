@@ -10,5 +10,6 @@
 *.so
 *.so.*
 *.1
+*.sh
 git-syn
 /public

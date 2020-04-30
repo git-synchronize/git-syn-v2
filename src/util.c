@@ -10,16 +10,38 @@
  *
  */
 
-#include <git2.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 #include "git-syn.h"
 
-int parse_config()
+int copy_file(const char *src, const char *dest)
 {
+    char c;
     int ret = EXIT_FAILURE;
+    FILE *src_file, *dest_file;
+
+    src_file = fopen(src, "r");
+
+    if (src_file == NULL) {
+        ret = EXIT_FAILURE;
+    }
+
+    dest_file = fopen(dest, "w");
+
+    if (dest_file == NULL) {
+        fclose(src_file);
+        ret = EXIT_FAILURE;
+    }
+
+    while ((c = fgetc(src_file)) != EOF) {
+        fputc(c, dest_file);
+    }
+
+    fclose(src_file);
+    fclose(dest_file);
+
+    ret = EXIT_SUCCESS;
 
     return ret;
 }
