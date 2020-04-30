@@ -45,7 +45,7 @@ and low level ("plumbing") commands.
 
 ## Low level commands (plumbing)
 
-**git-lfs-pre-push(1)**
+**git-syn-pre-push(1)**
 
 :   Git pre-push hook implementation.
 
