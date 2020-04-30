@@ -26,7 +26,10 @@ Git SYN is a command line extension for synchronizing Git remote repositories.
 
 # COMMANDS
 
-Currently, Git SYN only contains high level ("porcelain") commands.
+Like Git, Git SYN commands are separated into high level ("porcelain") commands
+and low level ("plumbing") commands.
+
+## High level commands (porcelain)
 
 **git-syn-install(1)**
 
@@ -39,6 +42,12 @@ Currently, Git SYN only contains high level ("porcelain") commands.
 **git-syn-monitor(1)**
 
 :   View or enable/disable Git SYN repository syncing.
+
+## Low level commands (plumbing)
+
+**git-lfs-pre-push(1)**
+
+:   Git pre-push hook implementation.
 
 # EXIT STATUS
 
