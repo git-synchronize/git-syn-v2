@@ -34,4 +34,6 @@ void print_usage(int status);
 
 void print_version(int status);
 
+int set_executable_permission(const char *file);
+
 #endif /* GIT_SYN_H */

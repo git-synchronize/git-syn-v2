@@ -45,3 +45,12 @@ int copy_file(const char *src, const char *dest)
 
     return ret;
 }
+
+int set_executable_permission(const char *file)
+{
+    int ret = EXIT_FAILURE;
+
+    (void) file;
+
+    return ret;
+}
