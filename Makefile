@@ -48,7 +48,7 @@ reformat:
 
 install: all
 	${INSTALL_PROGRAM} ${BUILD_DIR}/${PROGRAM_NAME} ${BIN_DIR}
-	@mkdir -p ${MAN_DIR} ${HOOK_DIR}
+	@mkdir -p ${MAN_DIR}/man1 ${HOOK_DIR}
 	${INSTALL_DATA} ${BUILD_DIR}/${PROGRAM_NAME}.1 ${MAN_DIR}/man1
 	${INSTALL_DATA} ${BUILD_DIR}/pre-push.sh ${HOOK_DIR}
 
