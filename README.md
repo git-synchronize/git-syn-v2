@@ -1,6 +1,6 @@
 # Git Synchronize
 
-_Event-driven git remote repository syncing._
+_Remote git repository syncing._
 
 Git SYN is a command line extension for synchronizing Git remote repositories.
 
@@ -8,7 +8,6 @@ Git SYN is a command line extension for synchronizing Git remote repositories.
 
 - [check](https://libcheck.github.io/check) (optional)
 - [libgit2](https://libgit2.org)
-- [libuv](https://libuv.org)
 - [pandoc](https://pandoc.org) (optional)
 
 ## Compiling
@@ -29,7 +28,7 @@ make install
 git syn -h
 Usage: git-syn [option] ... [command] ...
 
-Event-driven git remote repository syncing.
+Remote git repository syncing.
 
   -h, --help       display this help and exit
   -v, --version    output version information and exit
@@ -37,8 +36,8 @@ Event-driven git remote repository syncing.
   uninstall        remove extension from repository
   monitor          view or enable/disable repository sync
 
-Git SYN online help: <https://gitlab.com/oxr463/git-syn>
-Full documentation <https://oxr463.gitlab.io/git-syn>
+Git SYN online help: <https://gitlab.com/git-syn/git-syn>
+Full documentation <https://git-syn.gitlab.io/git-syn>
 or available locally via: man git-syn
 ```
 
