@@ -1,10 +1,10 @@
 % git-syn(1)
 % Lucas Ramage
-% April 24, 2020
+% September 7, 2021
 
 # NAME
 
-git-syn - event-driven git remote repository syncing
+git-syn - remote git repository syncing
 
 # SYNOPSIS
 
@@ -56,7 +56,7 @@ Returns zero on success, errno values on failure.
 # NOTES
 
 The git-syn project site, with more information and the source code
-repository, can be found at <https://gitlab.com/oxr463/git-syn>.
+repository, can be found at <https://gitlab.com/git-syn/git-syn>.
 
 This tool is currently under development, please report any bugs at
 the project site or directly to the author.
