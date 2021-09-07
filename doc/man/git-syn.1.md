@@ -12,7 +12,7 @@ git-syn - remote git repository syncing
 
 # DESCRIPTION
 
-Git SYN is a command line extension for synchronizing Git remote repositories.
+Git SYN is a command line extension for synchronizing remote git repositories.
 
 # OPTIONS
 
