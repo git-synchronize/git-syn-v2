@@ -56,7 +56,7 @@ Returns zero on success, errno values on failure.
 # NOTES
 
 The git-syn project site, with more information and the source code
-repository, can be found at <https://gitlab.com/git-syn/git-syn>.
+repository, can be found at <https://gitlab.com/git-syn/git-syn-v2>.
 
 This tool is currently under development, please report any bugs at
 the project site or directly to the author.
