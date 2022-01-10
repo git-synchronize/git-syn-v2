@@ -1,0 +1,6 @@
+[remote "bitbucket"]
+	url = https://bitbucket.org/git-syn/git-syn-v2.git
+[remote "github"]
+	url = https://github.com/git-synchronize/git-syn-v2.git
+[remote "gitlab"]
+	url = https://gitlab.com/git-syn/git-syn-v2.git
