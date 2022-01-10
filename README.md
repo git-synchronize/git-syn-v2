@@ -1,4 +1,4 @@
-# Git Synchronize
+# Git Synchronize v2
 
 _Remote git repository syncing._
 
