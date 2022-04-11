@@ -1,0 +1,14 @@
+grep -R syncing # replace with synchronization (check spelling)
+
+Motivation is for Disaster Recovery (DR) scenarios or in case of censorship by git forge platforms.
+
+Docker Compose File
+
+Global config, YAML support
+
+Kubernetes Helm Chart
+
+Make it simple to serve up a git mirror (possibly a helm chart? git-syn daemon pod, git serve pod behind Let's Encrypt ingress w/ Cert Manager), but a UI is out of scope. There are plenty of those available.
+
+git-sync has a different goal in mind. It only supports a single repository by design and is intended to run as a side car.
+

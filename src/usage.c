@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2020 Lucas Ramage <ramage.lucas@protonmail.com>
+ * Copyright (C) 2019-2022 Lucas Ramage <lucas.ramage@infinite-omicron.com>
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  *
@@ -23,7 +23,6 @@ void print_usage(int status)
            "\n  -v, --version    output version information and exit"
            "\n  install          install extension to repository"
            "\n  uninstall        remove extension from repository"
-           "\n  monitor          view or enable/disable repository sync"
            "\n\nGit SYN online help: <https://gitlab.com/oxr463/git-syn>"
            "\nFull documentation <https://oxr463.gitlab.io/git-syn>"
            "\nor available locally via: man git-syn\n",

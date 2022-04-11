@@ -34,7 +34,6 @@ Remote git repository syncing.
   -v, --version    output version information and exit
   install          install extension to repository
   uninstall        remove extension from repository
-  monitor          view or enable/disable repository sync
 
 Git SYN online help: <https://gitlab.com/git-syn/git-syn>
 Full documentation <https://git-syn.gitlab.io/git-syn>

@@ -18,7 +18,7 @@ Please include as much detail as you can. Let us know your git version,
 e.g., `git --version`, operating system, and the git-syn version number,
 e.g., `git syn --version`. If you get an error please include the full error
 and/or traceback. Issues are tracked on GitLab at
-<https://gitlab.com/oxr463/git-syn/issues>.
+<https://gitlab.com/git-syn/git-syn/issues>.
 
 ## Merge Requests
 

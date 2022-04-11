@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2020 Lucas Ramage <ramage.lucas@protonmail.com>
+ * Copyright (C) 2019-2022 Lucas Ramage <ramage.lucas@protonmail.com>
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  *
