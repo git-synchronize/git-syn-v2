@@ -56,3 +56,4 @@ SPDX-License-Identifier: [GPL-2.0-or-later](COPYING)
 
 - [GitLab Repository Mirroring](https://docs.gitlab.com/ee/user/project/repository/repository_mirroring.html)
 
+- [git-sync](https://github.com/kubernetes/git-sync)
