@@ -12,45 +12,38 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <sys/stat.h>
 
-#include "git-syn.h"
+#include "syn.h"
+
+#define BUF_SIZE 65536          //2^16
 
 int copy_file(const char *src, const char *dest)
 {
-    char c;
+    char *file_buffer = calloc(BUF_SIZE, 1);
+    FILE *src_file = NULL, *dest_file = NULL;
     int ret = EXIT_FAILURE;
-    FILE *src_file, *dest_file;
+    mode_t mode = 0700;
+    size_t n;
 
-    src_file = fopen(src, "r");
-
-    if (src_file == NULL) {
-        ret = EXIT_FAILURE;
+    if ((src_file = fopen(src, "rb")) && (dest_file = fopen(dest, "rb"))) {
+        while ((n = fread(file_buffer, 1, BUF_SIZE, src_file))
+               && fwrite(file_buffer, 1, n, dest_file));
     }
-
-    dest_file = fopen(dest, "w");
-
-    if (dest_file == NULL) {
+    free(file_buffer);
+    if (src_file) {
         fclose(src_file);
-        ret = EXIT_FAILURE;
     }
 
-    while ((c = fgetc(src_file)) != EOF) {
-        fputc(c, dest_file);
+    if (dest_file) {
+        fclose(dest_file);
     }
 
-    fclose(src_file);
-    fclose(dest_file);
+    chmod(dest, mode);
 
     ret = EXIT_SUCCESS;
-
-    return ret;
-}
-
-int set_executable_permission(const char *file)
-{
-    int ret = EXIT_FAILURE;
-
-    (void) file;
 
     return ret;
 }

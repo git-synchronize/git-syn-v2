@@ -13,3 +13,8 @@
 *.sh
 git-syn
 /public
+/tmp
+/test/check_main
+/test/check_install
+/test/check_usage
+/test/check_util

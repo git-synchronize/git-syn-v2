@@ -1,0 +1,25 @@
+Laptop -. signed commit .-> Bastion
+Bastion -. unsigned commit .-> Laptop
+Laptop -. signed commit .-> GitLab
+Laptop -. signed commit .-> GitHub
+
+Example commands:
+
+```
+git syn push
+git syn pull
+```
+
+Wraps scp which uses ssh config.
+
+Hook post push (receive?) on Bastion to execute commands, e.g., deploy script
+
+auto sync remote true/false
+
+auto delete merged branches 
+
+Set origin as source of truth, e.g., GitLab
+
+auto sync interval in cron format
+
+auto sign true/false

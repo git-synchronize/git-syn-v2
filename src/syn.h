@@ -19,12 +19,11 @@
 
 #define PROGRAM_NAME "git-syn"
 #define PROGRAM_DESCRIPTION "Event-driven git remote repository synchronization."
+#define HOOK_DIR "/data/data/com.termux/files/usr/local/share/git-syn/hook"
 
 int copy_file(const char *source, const char *target);
 
-int init_repo();
-
-int parse_config();
+int init_repo(char *git_repo_dir);
 
 void print_usage(int status);
 

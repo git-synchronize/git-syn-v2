@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "git-syn.h"
+#include "syn.h"
 
 void print_usage(int status)
 {
