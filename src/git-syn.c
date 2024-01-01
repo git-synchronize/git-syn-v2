@@ -25,7 +25,7 @@
 int main(int argc, char **argv)
 {
     bool install_extension = false,
-        remove_extension = false, monitor_repository = false;
+        remove_extension = false;
 
     char cwd[PATH_MAX];
 
@@ -74,8 +74,6 @@ int main(int argc, char **argv)
             install_extension = true;
         } else if (strcmp(argv[optind], "uninstall") == 0) {
             remove_extension = true;
-        } else if (strcmp(argv[optind], "monitor") == 0) {
-            monitor_repository = true;
         }
     }
 
@@ -91,8 +89,6 @@ int main(int argc, char **argv)
             printf("Git SYN initialized.\n");
         }
     } else if (remove_extension) {
-        printf("Not yet implemented\n");
-    } else if (monitor_repository) {
         printf("Not yet implemented\n");
     }
 

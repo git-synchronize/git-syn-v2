@@ -23,8 +23,8 @@ void print_usage(int status)
            "\n  -v, --version    output version information and exit"
            "\n  install          install extension to repository"
            "\n  uninstall        remove extension from repository"
-           "\n\nGit SYN online help: <https://gitlab.com/oxr463/git-syn>"
-           "\nFull documentation <https://oxr463.gitlab.io/git-syn>"
+           "\n\nGit SYN online help: <https://gitlab.com/git-syn/git-syn-v2>"
+           "\nFull documentation <https://git-syn.gitlab.io/git-syn-v2>"
            "\nor available locally via: man git-syn\n",
            PROGRAM_NAME, PROGRAM_DESCRIPTION);
 

@@ -18,15 +18,11 @@
 #endif
 
 #define PROGRAM_NAME "git-syn"
-#define PROGRAM_DESCRIPTION "Event-driven git remote repository syncing."
-
-#define PRE_PUSH_HOOK "/usr/local/share/" PROGRAM_NAME "/hook/pre-push.sh"
+#define PROGRAM_DESCRIPTION "Event-driven git remote repository synchronization."
 
 int copy_file(const char *source, const char *target);
 
 int init_repo();
-
-int install_hooks();
 
 int parse_config();
 

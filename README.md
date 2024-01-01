@@ -1,6 +1,6 @@
 # Git Synchronize v2
 
-_Remote git repository syncing._
+_Remote git repository synchronization._
 
 Git SYN is a command line extension for synchronizing git remote repositories.
 
@@ -28,7 +28,7 @@ make install
 git syn -h
 Usage: git-syn [option] ... [command] ...
 
-Remote git repository syncing.
+Remote git repository synchronization.
 
   -h, --help       display this help and exit
   -v, --version    output version information and exit

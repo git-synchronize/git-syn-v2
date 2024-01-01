@@ -1,7 +1,8 @@
 FROM alpine:latest
 
 RUN apk update && \
-    apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+    apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community \
+            --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
       check \
       gcc \
       git \
@@ -15,6 +16,7 @@ RUN apk update && \
 WORKDIR /usr/src/git-syn
 COPY . /usr/src/git-syn
 
-RUN make && \
+RUN mkdir -p /usr/local/share/man/man1 && \
+    make && \
     make install
 

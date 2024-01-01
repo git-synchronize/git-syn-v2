@@ -17,24 +17,13 @@
 
 #include "git-syn.h"
 
-int install_hooks(const char *git_hook_dir)
+int init_repo(char *git_repository_path)
 {
     int ret = EXIT_FAILURE;
 
-    ret = copy_file(PRE_PUSH_HOOK, git_hook_dir);
+    
 
-    return ret;
-}
-
-int init_repo()
-{
-    int ret = EXIT_FAILURE;
-
-    //ret = install_hooks();
-    if (ret == EXIT_SUCCESS) {
-        printf("Updated git hooks.\n");
-        ret = EXIT_SUCCESS;
-    }
+    git_remote_list(git_strarray *out, git_repository *repo);
 
     return ret;
 }
