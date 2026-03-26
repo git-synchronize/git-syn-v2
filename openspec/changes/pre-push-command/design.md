@@ -12,7 +12,7 @@ The `git-syn install` command writes a pre-push hook at `.git/hooks/pre-push` th
 **Non-Goals:**
 - Configurable push strategy (parallel vs. sequential) — deferred to global-yaml-config change
 - Authentication handling beyond what `go-git` provides natively
-- Modifying refspecs before forwarding to mirrors
+- Modifying or filtering refspecs before forwarding to mirrors
 
 ## Decisions
 
@@ -28,12 +28,23 @@ The hook is a safety net, not a blocker. Requiring all remotes to succeed would 
 **Concurrency: goroutine per remote, collect results.**
 Pushing to N remotes sequentially penalizes the common case. A goroutine per remote with a `sync.WaitGroup` and a result channel is straightforward and sufficient at this scale.
 
+**Parse refspecs from stdin, forward exactly those refs to mirror remotes.**
+Git passes the refs being pushed as lines on stdin: `<local-ref> <local-sha> <remote-ref> <remote-sha>`. The command reads all lines before pushing and builds a `[]config.RefSpec` to pass to `PushOptions`. This ensures mirrors receive exactly what the user pushed — not a full sync of all branches. A zero local sha (`0000000...`) signals deletion and maps to a delete refspec (`:refs/heads/<name>`).
+
+**Skip the remote named in `args[0]`.**
+Git passes the primary remote name as the first positional argument. That remote is already being pushed to by git itself; pushing to it again from the hook is redundant. The command filters it out of the `.gitremotes` entries before pushing.
+
+**Use `Force: true` on all mirror pushes.**
+Mirrors are followers. A rebase or amend on the primary branch would cause a non-fast-forward rejection on the mirror without force. Since the user has already authorized the push to the primary, force-syncing mirrors is the correct behavior.
+
 ## Risks / Trade-offs
 
 [go-git push may have auth limitations] → For HTTPS remotes requiring credentials, go-git relies on the system credential helper or explicit credential config. Document this limitation; users can fall back to SSH for mirror remotes.
 
 [Goroutine-per-remote doesn't bound parallelism] → Acceptable for the typical case (2-5 remotes). If users configure dozens of remotes this could spike. A bounded worker pool is a future optimization.
 
+[Force push on mirrors could overwrite divergent mirror state] → Acceptable: mirrors are not the source of truth. If a mirror has diverged (e.g. someone pushed directly to it), force-syncing is the correct resolution. Users who need bidirectional sync are outside the current scope.
+
 ## Open Questions
 
-- Should we forward stdin to each push, or is stdin only relevant for the hook's own validation? (Likely: stdin only matters if we want to skip no-op pushes — can be addressed in a follow-up.)
+None.
