@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Lucas Ramage <lucas.ramage@infinite-omicron.com>
+Copyright © 2024-2026 Lucas Ramage <lucas.ramage@infinite-omicron.com>
 */
 package cmd
 
@@ -57,7 +57,7 @@ var remoteAddCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		name, url := args[0], args[1]
 
-		if err := validateRemoteURL(url); err != nil {
+		if err := validateRemoteURL(url, ActiveConfig.AllowedSchemes); err != nil {
 			fmt.Fprintf(os.Stderr, "error: %v\n", err)
 			os.Exit(1)
 		}

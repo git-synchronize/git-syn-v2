@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Lucas Ramage <lucas.ramage@infinite-omicron.com>
+Copyright © 2024-2026 Lucas Ramage <lucas.ramage@infinite-omicron.com>
 */
 package cmd
 
@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
@@ -15,14 +16,16 @@ import (
 
 const defaultOnFailure = "warn"
 const defaultPushStrategy = "parallel"
+const defaultSyncInterval = 5 * time.Minute
 
 var defaultAllowedSchemes = []string{"https", "ssh"}
 
 // Config holds the global git-syn configuration loaded from the XDG config file.
 type Config struct {
-	OnFailure      string   `yaml:"on_failure"`
-	PushStrategy   string   `yaml:"push_strategy"`
-	AllowedSchemes []string `yaml:"allowed_schemes"`
+	OnFailure      string        `yaml:"on_failure"`
+	PushStrategy   string        `yaml:"push_strategy"`
+	AllowedSchemes []string      `yaml:"allowed_schemes"`
+	SyncInterval   time.Duration `yaml:"sync_interval"`
 }
 
 // ActiveConfig is the package-level singleton loaded at process startup.
@@ -33,6 +36,7 @@ func defaultConfig() *Config {
 		OnFailure:      defaultOnFailure,
 		PushStrategy:   defaultPushStrategy,
 		AllowedSchemes: defaultAllowedSchemes,
+		SyncInterval:   defaultSyncInterval,
 	}
 }
 
@@ -50,6 +54,10 @@ func loadConfig() (*Config, error) {
 		return defaultConfig(), nil
 	}
 
+	return loadConfigFromPath(path)
+}
+
+func loadConfigFromPath(path string) (*Config, error) {
 	data, err := os.ReadFile(path)
 	if os.IsNotExist(err) {
 		return defaultConfig(), nil
@@ -72,6 +80,9 @@ func loadConfig() (*Config, error) {
 	if len(cfg.AllowedSchemes) == 0 {
 		cfg.AllowedSchemes = defaultAllowedSchemes
 	}
+	if cfg.SyncInterval == 0 {
+		cfg.SyncInterval = defaultSyncInterval
+	}
 
 	return cfg, nil
 }
@@ -89,6 +100,9 @@ on_failure: warn
 # - parallel: push to all remotes concurrently
 # - sequential: push to remotes one at a time in the order they appear in .gitremotes
 push_strategy: parallel
+
+# sync_interval: default interval for the 'daemon' command (e.g., 5m, 1h)
+# sync_interval: 5m
 
 # allowed_schemes: URL schemes accepted by install and remote add
 # Options: https, ssh

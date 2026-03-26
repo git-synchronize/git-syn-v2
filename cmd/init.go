@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Lucas Ramage <lucas.ramage@infinite-omicron.com>
+Copyright © 2024-2026 Lucas Ramage <lucas.ramage@infinite-omicron.com>
 */
 package cmd
 
@@ -57,7 +57,7 @@ func init_repo(path string) {
 			continue
 		}
 		url := rc.URLs[0]
-		if err := validateRemoteURL(url); err != nil {
+		if err := validateRemoteURL(url, ActiveConfig.AllowedSchemes); err != nil {
 			fmt.Fprintf(os.Stderr, "warning: skipping remote %q with unsupported URL scheme: %s\n", rc.Name, url)
 			continue
 		}

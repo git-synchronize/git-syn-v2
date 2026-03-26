@@ -1,10 +1,11 @@
 /*
-Copyright © 2024 Lucas Ramage <lucas.ramage@infinite-omicron.com>
+Copyright © 2024-2026 Lucas Ramage <lucas.ramage@infinite-omicron.com>
 */
 package cmd
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"strings"
 
@@ -17,9 +18,9 @@ type remoteEntry struct {
 	url  string
 }
 
-// validateRemoteURL returns an error if the URL scheme is not in ActiveConfig.AllowedSchemes.
-func validateRemoteURL(rawURL string) error {
-	for _, scheme := range ActiveConfig.AllowedSchemes {
+// validateRemoteURL returns an error if the URL scheme is not in allowedSchemes.
+func validateRemoteURL(rawURL string, allowedSchemes []string) error {
+	for _, scheme := range allowedSchemes {
 		switch scheme {
 		case "https":
 			if strings.HasPrefix(rawURL, "https://") {
@@ -79,6 +80,7 @@ func parseGitremotes(path string) ([]remoteEntry, error) {
 			currentName = trimmed[len(`[remote "`) : len(trimmed)-len(`"]`)]
 		} else if strings.HasPrefix(trimmed, "url = ") && currentName != "" {
 			url := strings.TrimPrefix(trimmed, "url = ")
+			slog.Debug("parsed remote entry", "name", currentName, "url", url)
 			entries = append(entries, remoteEntry{name: currentName, url: url})
 			currentName = ""
 		}

@@ -1,11 +1,12 @@
 /*
-Copyright © 2024 Lucas Ramage <lucas.ramage@infinite-omicron.com>
+Copyright © 2024-2026 Lucas Ramage <lucas.ramage@infinite-omicron.com>
 */
 package cmd
 
 import (
 	"fmt"
 	"log"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"sync"
@@ -20,6 +21,7 @@ type pushResult struct {
 }
 
 func pushRemote(repo *git.Repository, r remoteEntry) error {
+	slog.Info("pushing to remote", "name", r.name)
 	remote, err := repo.Remote(r.name)
 	if err != nil {
 		return fmt.Errorf("remote %q not found in .git/config (run git-syn install): %w", r.name, err)
@@ -29,6 +31,7 @@ func pushRemote(repo *git.Repository, r remoteEntry) error {
 		RemoteName: r.name,
 	})
 	if err == git.NoErrAlreadyUpToDate {
+		slog.Debug("remote already up to date", "name", r.name)
 		return nil
 	}
 	return err
@@ -53,6 +56,7 @@ reporting per-remote success or failure.`,
 				log.Fatalf("failed to get current directory: %v", err)
 			}
 		}
+		slog.Debug("using repository path", "path", path)
 
 		gitremotesPath := filepath.Join(path, ".gitremotes")
 		entries, err := parseGitremotes(gitremotesPath)
@@ -69,15 +73,19 @@ reporting per-remote success or failure.`,
 			log.Fatalf("%s is not a git repository", path)
 		}
 
-		if ActiveConfig.PushStrategy == "sequential" {
-			runSequential(repo, entries)
-		} else {
-			runParallel(repo, entries)
-		}
+		slog.Debug("starting sync", "strategy", ActiveConfig.PushStrategy, "remote_count", len(entries))
+		os.Exit(syncAll(repo, entries))
 	},
 }
 
-func runParallel(repo *git.Repository, entries []remoteEntry) {
+func syncAll(repo *git.Repository, entries []remoteEntry) int {
+	if ActiveConfig.PushStrategy == "sequential" {
+		return runSequential(repo, entries)
+	}
+	return runParallel(repo, entries)
+}
+
+func runParallel(repo *git.Repository, entries []remoteEntry) int {
 	results := make(chan pushResult, len(entries))
 	var wg sync.WaitGroup
 
@@ -93,10 +101,10 @@ func runParallel(repo *git.Repository, entries []remoteEntry) {
 	wg.Wait()
 	close(results)
 
-	handleResults(results)
+	return handleResults(results)
 }
 
-func runSequential(repo *git.Repository, entries []remoteEntry) {
+func runSequential(repo *git.Repository, entries []remoteEntry) int {
 	results := make(chan pushResult, len(entries))
 
 	for _, entry := range entries {
@@ -104,16 +112,15 @@ func runSequential(repo *git.Repository, entries []remoteEntry) {
 		results <- pushResult{name: entry.name, err: err}
 		if err != nil && ActiveConfig.OnFailure == "abort" {
 			close(results)
-			handleResults(results)
-			return
+			return handleResults(results)
 		}
 	}
 
 	close(results)
-	handleResults(results)
+	return handleResults(results)
 }
 
-func handleResults(results <-chan pushResult) {
+func handleResults(results <-chan pushResult) int {
 	var succeeded, failed int
 	for r := range results {
 		if r.err != nil {
@@ -126,11 +133,12 @@ func handleResults(results <-chan pushResult) {
 	}
 
 	if ActiveConfig.OnFailure == "abort" && failed > 0 {
-		os.Exit(1)
+		return 1
 	}
 	if succeeded == 0 && failed > 0 {
-		os.Exit(1)
+		return 1
 	}
+	return 0
 }
 
 func init() {
