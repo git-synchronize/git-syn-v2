@@ -7,11 +7,51 @@ Git SYN is a command line extension for synchronizing git remote repositories.
 ## Overview
 
 ```mermaid
-graph LR
-    Laptop -. signed commit .-> Bastion
-    Bastion -. unsigned commit .-> Laptop
-    Laptop -. signed commit .-> GitLab
-    Laptop -. signed commit .-> GitHub
+graph TD
+    Dev(["Developer"])
+
+    Dev -->|"git push"| Hook
+    Dev -->|"git syn install"| InstallCmd
+    Dev -->|"git syn remote ..."| RemoteCmd
+
+    subgraph repo[".git/"]
+        Hook[".git/hooks/pre-push\n(embedded script)"]
+        GitConf[".git/config\n(remote registrations)"]
+    end
+
+    Gitremotes[".gitremotes\n(INI mirror list)"]
+
+    subgraph gitsyn["git-syn (Go · Cobra)"]
+        InstallCmd["install / uninstall"]
+        RemoteCmd["remote add | remove | list"]
+        PrePushCmd["pre-push\n(goroutine per remote)"]
+        ConfigCmd["config init"]
+        GoGit(["go-git"])
+        Cfg["ActiveConfig\non_failure · push_strategy\nallowed_schemes"]
+    end
+
+    UserConf(["~/.config/git-syn/config.yaml"])
+
+    subgraph mirrors["Remote Git Forges"]
+        direction LR
+        R1["GitHub"]
+        R2["GitLab"]
+        R3["Bastion · …"]
+    end
+
+    Hook -->|"git syn pre-push"| PrePushCmd
+    PrePushCmd -->|reads| Gitremotes & GitConf
+    PrePushCmd --> GoGit
+    GoGit -->|"parallel or sequential"| R1 & R2 & R3
+
+    InstallCmd -->|writes| Hook & Gitremotes
+    InstallCmd --> GoGit -->|"registers remotes"| GitConf
+
+    RemoteCmd -->|reads / writes| Gitremotes
+    RemoteCmd --> GoGit
+
+    UserConf -.->|"loaded at startup"| Cfg
+    Cfg -.->|"governs push behavior"| PrePushCmd
 ```
 
 ## Dependencies
