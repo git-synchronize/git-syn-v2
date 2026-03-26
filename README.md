@@ -4,14 +4,24 @@ _Remote git repository synchronization._
 
 Git SYN is a command line extension for synchronizing git remote repositories.
 
+## Overview
+
+```mermaid
+graph LR
+    Laptop -. signed commit .-> Bastion
+    Bastion -. unsigned commit .-> Laptop
+    Laptop -. signed commit .-> GitLab
+    Laptop -. signed commit .-> GitHub
+```
+
 ## Dependencies
 
-- [Go 1.24+](https://go.dev)
+- [mise](https://mise.jdx.dev) — manages Go toolchain and tasks
 
 ## Compiling
 
 ```sh
-go build -o git-syn main.go
+mise run build
 ```
 
 ## Installation
@@ -73,6 +83,19 @@ To run all checks (formatting, linting, and tests):
 ```sh
 mise run check
 ```
+
+## Tasks
+
+| Task | Description |
+|------|-------------|
+| `mise run build` | Build git-syn |
+| `mise run test` | Run all Go tests |
+| `mise run check` | Format, lint, and test |
+| `mise run fmt` | Format Go source files |
+| `mise run lint` | Run go vet |
+| `mise run tidy` | Tidy go.mod and go.sum |
+| `mise run clean` | Remove build artifacts |
+| `mise run man` | Generate man page from markdown |
 
 ## License
 

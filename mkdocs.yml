@@ -10,7 +10,7 @@ theme:
 docs_dir: doc
 site_dir: public
 
-repo_url: https://gitlab.com/oxr463/git-syn.git
+repo_url: https://gitlab.com/git-syn/git-syn-v2
 
 nav:
   - Introduction: index.md
