@@ -1,10 +1,10 @@
 % git-syn(1)
 % Lucas Ramage
-% September 7, 2021
+% March 26, 2026
 
 # NAME
 
-git-syn - remote git repository syncing
+git-syn - remote git repository synchronization
 
 # SYNOPSIS
 
@@ -12,7 +12,7 @@ git-syn - remote git repository syncing
 
 # DESCRIPTION
 
-Git SYN is a command line extension for synchronizing remote git repositories.
+Git SYN is a command line extension for synchronizing remote git repositories. It enables remote repository synchronization across multiple git forges for disaster recovery and censorship resistance.
 
 # OPTIONS
 
@@ -24,34 +24,48 @@ Git SYN is a command line extension for synchronizing remote git repositories.
 
 :   Prints the version number.
 
+**--verbose**
+
+:   Enable verbose output.
+
+**--debug**
+
+:   Enable debug output (implies verbose).
+
 # COMMANDS
 
-Like Git, Git SYN commands are separated into high level ("porcelain") commands
-and low level ("plumbing") commands.
+**config**
 
-## High level commands (porcelain)
+:   Manage git-syn configuration.
+    Use `git syn config init` to create a default configuration file.
 
-**git-syn-install(1)**
+**daemon**
 
-:   Install Git SYN configuration.
+:   Run synchronization on a schedule.
 
-**git-syn-uninstall(1)**
+**install**
 
-:   Remove Git SYN configuration.
+:   Install extension to repository.
+    Installs a pre-push hook into .git/hooks/ and writes a .gitremotes file.
 
-**git-syn-monitor(1)**
+**pre-push**
 
-:   View or enable/disable Git SYN repository syncing.
+:   Push to all remotes in .gitremotes.
+    Typically invoked by the git pre-push hook.
 
-## Low level commands (plumbing)
+**remote**
 
-**git-syn-pre-push(1)**
+:   Manage tracked remotes.
+    Subcommands: `add`, `remove`, `list`.
 
-:   Git pre-push hook implementation.
+**uninstall**
+
+:   Remove extension from repository.
+    Removes the pre-push hook.
 
 # EXIT STATUS
 
-Returns zero on success, errno values on failure.
+Returns zero on success, non-zero on failure.
 
 # NOTES
 
@@ -60,4 +74,3 @@ repository, can be found at <https://gitlab.com/git-syn/git-syn-v2>.
 
 This tool is currently under development, please report any bugs at
 the project site or directly to the author.
-

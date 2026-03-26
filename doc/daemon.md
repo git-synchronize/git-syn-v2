@@ -1,32 +1,38 @@
-# git-synd
+# git-syn daemon
 
-**This is new in v2.**
+The `daemon` command runs the synchronization process periodically.
 
-The daemon monitors `/srv/git` or wherever the mirror has been setup on disk for any file changes with [libuv](https://libuv.org).
-From the local repository, if a push is issued to the local remote, then the daemon will see the changes written to the file system
-and trigger a synchronization job.
+The daemon will push to all remotes in `.gitremotes` at the specified interval.
 
-Example directory structure:
+## Usage
 
 ```sh
-.
-├── git-syn-v2.git
-└── git-syn.git
-
-2 directories, 0 files
+git syn daemon [flags]
 ```
 
-```mermaid
-stateDiagram-v2
-    [*] --> git_push
-    git_push --> uv_fs_event_t
-    uv_fs_event_t --> git_synchronize
-    git_synchronize --> [*]
+### Flags
+
+- `--interval <duration>`: Sync interval (e.g., `5m`, `1h`). Defaults to the value in `~/.config/git-syn/config.yaml` or `5m`.
+- `--path <dir>`: Path to the git repository (default: current directory).
+- `--once`: Run exactly once and exit.
+
+## How it works
+
+The daemon uses a simple timer to trigger synchronization. It reads the `.gitremotes` file in the repository and attempts to push the current state of the repository to all remotes listed.
+
+### Example
+
+To run the daemon with a 10-minute interval:
+
+```sh
+git syn daemon --interval 10m
 ```
 
-The sync job will attempt to push all branches to all remotes listed in the config.
+## Configuration
 
-Credential handling is out of scope. See the [git credential helper](https://git-scm.com/docs/git-credential) for more information.
+The default sync interval can be configured in the global configuration file:
 
-**Do not commit credentials to any git repository. If this is really required, see [sops](https://github.com/mozilla/sops) instead.
-
+```yaml
+# ~/.config/git-syn/config.yaml
+sync_interval: 5m
+```

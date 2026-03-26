@@ -6,20 +6,18 @@ Git SYN is a command line extension for synchronizing git remote repositories.
 
 ## Dependencies
 
-- [check](https://libcheck.github.io/check) (optional)
-- [libgit2](https://libgit2.org)
-- [pandoc](https://pandoc.org) (optional)
+- [Go 1.24+](https://go.dev)
 
 ## Compiling
 
 ```sh
-make
+go build -o git-syn main.go
 ```
 
 ## Installation
 
 ```sh
-make install
+go install
 ```
 
 ## Usage
@@ -79,11 +77,6 @@ mise run check
 ## License
 
 SPDX-License-Identifier: [GPL-2.0-or-later](COPYING)
-
-## Reference
-
-- [How to integrate new subcommands](https://git.kernel.org/pub/scm/git/git.git/plain/Documentation/howto/new-command.txt)
-- [/srv : Data for services provided by this system](https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch03s17.html)
 
 ## See Also
 
