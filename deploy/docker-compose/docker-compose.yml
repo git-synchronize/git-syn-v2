@@ -1,0 +1,16 @@
+services:
+  git-serve:
+    # Purpose-built nginx + git-http-backend image.
+    # To upgrade: check https://hub.docker.com/r/cirocosta/gitserver-http/tags
+    image: cirocosta/gitserver-http:3
+    ports:
+      - "80:80"
+    volumes:
+      - git-data:/git
+    environment:
+      - GIT_HTTP_EXPORT_ALL=${GIT_HTTP_EXPORT_ALL:-1}
+      - GIT_PROJECT_ROOT=${GIT_PROJECT_ROOT:-/git}
+    restart: unless-stopped
+
+volumes:
+  git-data:

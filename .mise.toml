@@ -1,0 +1,14 @@
+[tools]
+go = "latest"
+
+[tasks.build]
+description = "Build git-syn"
+run = "go build -buildvcs=false ."
+
+[tasks.clean]
+description = "Remove build artifacts"
+run = "rm -f git-syn git-syn.1"
+
+[tasks.man]
+description = "Generate man page from markdown"
+run = "pandoc -s -t man doc/man/git-syn.1.md -o ./git-syn.1"
