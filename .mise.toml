@@ -9,6 +9,26 @@ run = "go build -buildvcs=false ."
 description = "Remove build artifacts"
 run = "rm -f git-syn git-syn.1"
 
+[tasks.fmt]
+description = "Format Go source files"
+run = "gofmt -w ."
+
+[tasks.lint]
+description = "Run go vet"
+run = "go vet ./..."
+
+[tasks.test]
+description = "Run all Go tests"
+run = "go test ./..."
+
+[tasks.tidy]
+description = "Tidy go.mod and go.sum"
+run = "go mod tidy"
+
+[tasks.check]
+description = "Format, lint, and test"
+depends = ["fmt", "lint", "test"]
+
 [tasks.man]
 description = "Generate man page from markdown"
 run = "pandoc -s -t man doc/man/git-syn.1.md -o ./git-syn.1"
