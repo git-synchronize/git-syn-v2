@@ -7,7 +7,7 @@ services:
   - docker:dind
 
 test:
-  image: debian:bookworm-slim
+  image: debian:trixie-slim
   services: []
   before_script:
     - apt-get update && apt-get install -y --no-install-recommends curl ca-certificates git
