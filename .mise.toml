@@ -19,7 +19,7 @@ run = "go vet ./..."
 
 [tasks.test]
 description = "Run all Go tests"
-run = "go test ./..."
+run = "go test ./... -cover"
 
 [tasks.tidy]
 description = "Tidy go.mod and go.sum"

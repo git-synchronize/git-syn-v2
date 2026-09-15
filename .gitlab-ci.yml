@@ -6,6 +6,17 @@ image: docker:latest
 services:
   - docker:dind
 
+test:
+  image: debian:bookworm-slim
+  services: []
+  before_script:
+    - apt-get update && apt-get install -y --no-install-recommends curl ca-certificates git
+    - curl https://mise.run | sh
+    - export PATH="$HOME/.local/bin:$PATH"
+    - mise install
+  script:
+    - mise run check
+
 build:
   script:
     - docker build -t git-syn/git-syn .

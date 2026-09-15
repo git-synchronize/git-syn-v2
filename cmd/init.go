@@ -33,21 +33,21 @@ func install_hook(hookType, hooksDir string) error {
 	return set_file_permissions(dst, 0700)
 }
 
-func init_repo(path string) {
+func init_repo(path string) error {
 	repo, err := git.PlainOpen(path)
 	if err != nil {
-		log.Fatalf("%s is not a git repository", path)
+		return fmt.Errorf("%s is not a git repository", path)
 	}
 
 	remotes, err := repo.Remotes()
 	if err != nil {
-		log.Fatalf("failed to list remotes: %v", err)
+		return fmt.Errorf("failed to list remotes: %w", err)
 	}
 
 	gitremotesPath := filepath.Join(path, ".gitremotes")
 	f, err := os.Create(gitremotesPath)
 	if err != nil {
-		log.Fatalf("failed to create .gitremotes: %v", err)
+		return fmt.Errorf("failed to create .gitremotes: %w", err)
 	}
 	f.Close()
 
@@ -62,20 +62,22 @@ func init_repo(path string) {
 			continue
 		}
 		if err := appendToGitremotes(gitremotesPath, rc.Name, url); err != nil {
-			log.Fatalf("failed to write .gitremotes: %v", err)
+			return fmt.Errorf("failed to write .gitremotes: %w", err)
 		}
 	}
 
 	entries, err := parseGitremotes(gitremotesPath)
 	if err != nil {
-		log.Fatalf("failed to read .gitremotes: %v", err)
+		return fmt.Errorf("failed to read .gitremotes: %w", err)
 	}
 
 	for _, entry := range entries {
 		if err := registerRemoteInConfig(repo, entry.name, entry.url); err != nil {
-			log.Fatalf("failed to register remote %q in .git/config: %v", entry.name, err)
+			return fmt.Errorf("failed to register remote %q in .git/config: %w", entry.name, err)
 		}
 	}
+
+	return nil
 }
 
 func cleanGitremotes(repoPath string) error {
@@ -135,7 +137,9 @@ for disaster recovery and censorship resistance.`,
 			log.Fatalf("failed to install pre-push hook: %v", err)
 		}
 
-		init_repo(path)
+		if err := init_repo(path); err != nil {
+			log.Fatalf("%v", err)
+		}
 
 		fmt.Println("Updated git hooks. Git SYN initialized.")
 	},

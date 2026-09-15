@@ -23,15 +23,15 @@ func TestLoggingFlagsRegistration(t *testing.T) {
 
 func TestSlogConfiguration(t *testing.T) {
 	var buf bytes.Buffer
-	
+
 	t.Run("verbose enabled", func(t *testing.T) {
 		buf.Reset()
 		handler := slog.NewTextHandler(&buf, &slog.HandlerOptions{Level: slog.LevelInfo})
 		logger := slog.New(handler)
-		
+
 		logger.Info("info message")
 		logger.Debug("debug message")
-		
+
 		output := buf.String()
 		assert.Contains(t, output, "level=INFO")
 		assert.Contains(t, output, "msg=\"info message\"")
@@ -42,10 +42,10 @@ func TestSlogConfiguration(t *testing.T) {
 		buf.Reset()
 		handler := slog.NewTextHandler(&buf, &slog.HandlerOptions{Level: slog.LevelDebug})
 		logger := slog.New(handler)
-		
+
 		logger.Info("info message")
 		logger.Debug("debug message")
-		
+
 		output := buf.String()
 		assert.Contains(t, output, "level=INFO")
 		assert.Contains(t, output, "level=DEBUG")
