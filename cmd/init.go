@@ -25,6 +25,9 @@ func set_file_permissions(path string, mode os.FileMode) error {
 }
 
 func install_hook(hookType, hooksDir string) error {
+	if err := os.MkdirAll(hooksDir, 0755); err != nil {
+		return err
+	}
 	content := strings.ReplaceAll(hookContent, "{{Command}}", hookType)
 	dst := filepath.Join(hooksDir, hookType)
 	if err := write_hook(dst, content); err != nil {
@@ -148,6 +151,25 @@ for disaster recovery and censorship resistance.`,
 var uninstallPath string
 var uninstallClean bool
 
+// uninstallRepo removes the pre-push hook from path, optionally cleaning up
+// .gitremotes and registered remotes, and returns the message to print on
+// success.
+func uninstallRepo(path string, clean bool) (message string, err error) {
+	hookPath := filepath.Join(path, ".git", "hooks", "pre-push")
+	if err := os.Remove(hookPath); err != nil && !os.IsNotExist(err) {
+		return "", fmt.Errorf("failed to remove pre-push hook: %w", err)
+	}
+
+	if !clean {
+		return "Removed git hooks. Git SYN uninstalled. Run with --clean to also remove .gitremotes and remote config entries.", nil
+	}
+
+	if err := cleanGitremotes(path); err != nil {
+		return "", fmt.Errorf("failed to clean up remotes: %w", err)
+	}
+	return "Removed git hooks and remotes. Git SYN fully uninstalled.", nil
+}
+
 var uninstallCmd = &cobra.Command{
 	Use:   "uninstall [--path <dir>]",
 	Short: "remove extension from repository",
@@ -164,19 +186,11 @@ Removes the pre-push hook from .git/hooks/ that was installed by git-syn.`,
 			}
 		}
 
-		hookPath := filepath.Join(path, ".git", "hooks", "pre-push")
-		if err := os.Remove(hookPath); err != nil && !os.IsNotExist(err) {
-			log.Fatalf("failed to remove pre-push hook: %v", err)
+		message, err := uninstallRepo(path, uninstallClean)
+		if err != nil {
+			log.Fatalf("%v", err)
 		}
-
-		if uninstallClean {
-			if err := cleanGitremotes(path); err != nil {
-				log.Fatalf("failed to clean up remotes: %v", err)
-			}
-			fmt.Println("Removed git hooks and remotes. Git SYN fully uninstalled.")
-		} else {
-			fmt.Println("Removed git hooks. Git SYN uninstalled. Run with --clean to also remove .gitremotes and remote config entries.")
-		}
+		fmt.Println(message)
 	},
 }
 

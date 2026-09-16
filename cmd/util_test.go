@@ -67,7 +67,9 @@ func TestValidateRemoteURL(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			err := validateRemoteURL(tt.url, tt.allowedSchemes)
 			if tt.wantErr {
-				assert.Error(t, err)
+				require.Error(t, err)
+				assert.Contains(t, err.Error(), "unsupported URL scheme")
+				assert.Contains(t, err.Error(), tt.url, "error should name the offending URL so the CLI message is actionable")
 			} else {
 				assert.NoError(t, err)
 			}

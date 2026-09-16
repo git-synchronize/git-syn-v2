@@ -24,4 +24,4 @@
 ## 5. Help text and manual verification
 
 - [x] 5.1 Write accurate `Use`, `Short`, and `Long` descriptions for the command
-- [ ] 5.2 Manually verify: `git-syn install` followed by a git push delegates to `git-syn pre-push` and pushes to all `.gitremotes` entries
+- [x] 5.2 Manually verify: `git-syn install` followed by a git push delegates to `git-syn pre-push` and pushes to all `.gitremotes` entries

@@ -20,7 +20,7 @@
 
 ## 4. Verification and testing
 - [x] 4.1 Add a unit test for the duration-string parsing in `loadConfig` (valid, zero, invalid inputs)
-- [ ] 4.2 Add a unit test for interval resolution logic (flag priority over config)
+- [x] 4.2 Add a unit test for interval resolution logic (flag priority over config)
 
 ## 5. Documentation
 - [x] 5.1 Update `README.md` with a section describing the `daemon` command and example invocations

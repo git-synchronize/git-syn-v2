@@ -21,5 +21,5 @@
 - [x] 5.1 Implement `remoteListCmd` that parses `.gitremotes` and prints each entry name and URL, with an `[unregistered]` suffix if missing from `.git/config`
 
 ## 6. Verification and manual testing
-- [ ] 6.1 Verify `remote add` → `remote list` → `remote remove` round-trip leaves no artifacts
-- [ ] 6.2 Verify `remote add` with an invalid URL scheme prints a useful error
+- [x] 6.1 Verify `remote add` → `remote list` → `remote remove` round-trip leaves no artifacts
+- [x] 6.2 Verify `remote add` with an invalid URL scheme prints a useful error

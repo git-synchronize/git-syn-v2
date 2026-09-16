@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"log"
 	"log/slog"
 	"os"
@@ -16,6 +17,20 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/spf13/cobra"
 )
+
+// resolveInterval picks the sync interval to use: flagInterval takes priority
+// when nonzero, otherwise configInterval. It is an error for the resolved
+// interval to be zero unless once is true (a single run needs no interval).
+func resolveInterval(flagInterval, configInterval time.Duration, once bool) (time.Duration, error) {
+	interval := flagInterval
+	if interval == 0 {
+		interval = configInterval
+	}
+	if interval == 0 && !once {
+		return 0, errors.New("sync interval must be greater than zero")
+	}
+	return interval, nil
+}
 
 var (
 	daemonPath     string
@@ -40,13 +55,9 @@ If --once is specified, it will run exactly once and exit.`,
 			}
 		}
 
-		interval := daemonInterval
-		if interval == 0 {
-			interval = ActiveConfig.SyncInterval
-		}
-
-		if interval == 0 && !daemonOnce {
-			log.Fatal("sync interval must be greater than zero")
+		interval, err := resolveInterval(daemonInterval, ActiveConfig.SyncInterval, daemonOnce)
+		if err != nil {
+			log.Fatal(err)
 		}
 
 		gitremotesPath := filepath.Join(path, ".gitremotes")

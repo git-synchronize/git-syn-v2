@@ -11,6 +11,6 @@
 - [x] 3.1 Update the `Run` function of `uninstallCmd` to remove the `pre-push` hook, and conditionally call `cleanGitremotes` if the `--clean` flag is set
 
 ## 4. Verification and manual testing
-- [ ] 4.1 Verify `git-syn uninstall` (no flags) leaves `.gitremotes` and `.git/config` entries intact and prints the warning message
-- [ ] 4.2 Verify `git-syn uninstall --clean` removes `.gitremotes`, removes `.git/config` entries, and prints the clean message
-- [ ] 4.3 Verify `git-syn uninstall --clean` succeeds when `.gitremotes` is already absent
+- [x] 4.1 Verify `git-syn uninstall` (no flags) leaves `.gitremotes` and `.git/config` entries intact and prints the warning message
+- [x] 4.2 Verify `git-syn uninstall --clean` removes `.gitremotes`, removes `.git/config` entries, and prints the clean message
+- [x] 4.3 Verify `git-syn uninstall --clean` succeeds when `.gitremotes` is already absent

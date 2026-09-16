@@ -20,9 +20,9 @@ import (
 // newTestRepoPair creates a local repository with one commit and a bare
 // repository registered as its remote, entirely on the local filesystem
 // (go-git's "file" transport needs no network access). It returns the local
-// repository and the name under which the bare repo is registered as a
-// remote.
-func newTestRepoPair(t *testing.T) (repo *git.Repository, remoteName, remotePath string) {
+// repository, its filesystem path, and the name under which the bare repo
+// is registered as a remote.
+func newTestRepoPair(t *testing.T) (repo *git.Repository, repoPath, remoteName, remotePath string) {
 	t.Helper()
 
 	remoteName = "origin"
@@ -30,7 +30,7 @@ func newTestRepoPair(t *testing.T) (repo *git.Repository, remoteName, remotePath
 	_, err := git.PlainInit(remotePath, true)
 	require.NoError(t, err)
 
-	repoPath := t.TempDir()
+	repoPath = t.TempDir()
 	repo, err = git.PlainInit(repoPath, false)
 	require.NoError(t, err)
 
@@ -52,7 +52,7 @@ func newTestRepoPair(t *testing.T) (repo *git.Repository, remoteName, remotePath
 	})
 	require.NoError(t, err)
 
-	return repo, remoteName, remotePath
+	return repo, repoPath, remoteName, remotePath
 }
 
 // captureStdout runs fn with os.Stdout redirected to a pipe and returns
@@ -86,7 +86,7 @@ func withConfig(t *testing.T, cfg *Config) {
 
 func TestPushRemote(t *testing.T) {
 	t.Run("successful push", func(t *testing.T) {
-		repo, remoteName, remotePath := newTestRepoPair(t)
+		repo, _, remoteName, remotePath := newTestRepoPair(t)
 
 		err := pushRemote(repo, remoteEntry{name: remoteName})
 		require.NoError(t, err)
@@ -99,7 +99,7 @@ func TestPushRemote(t *testing.T) {
 	})
 
 	t.Run("already up to date", func(t *testing.T) {
-		repo, remoteName, _ := newTestRepoPair(t)
+		repo, _, remoteName, _ := newTestRepoPair(t)
 		require.NoError(t, pushRemote(repo, remoteEntry{name: remoteName}))
 
 		err := pushRemote(repo, remoteEntry{name: remoteName})
@@ -107,7 +107,7 @@ func TestPushRemote(t *testing.T) {
 	})
 
 	t.Run("remote not registered", func(t *testing.T) {
-		repo, _, _ := newTestRepoPair(t)
+		repo, _, _, _ := newTestRepoPair(t)
 
 		err := pushRemote(repo, remoteEntry{name: "does-not-exist"})
 		require.Error(t, err)
@@ -119,7 +119,7 @@ func TestPushRemote(t *testing.T) {
 func TestRunParallel(t *testing.T) {
 	withConfig(t, &Config{OnFailure: "warn", PushStrategy: "parallel", AllowedSchemes: defaultAllowedSchemes})
 
-	repo, goodRemote, _ := newTestRepoPair(t)
+	repo, _, goodRemote, _ := newTestRepoPair(t)
 	entries := []remoteEntry{
 		{name: "missing-remote"},
 		{name: goodRemote},
@@ -139,7 +139,7 @@ func TestRunSequential(t *testing.T) {
 	t.Run("abort stops before later remotes", func(t *testing.T) {
 		withConfig(t, &Config{OnFailure: "abort", PushStrategy: "sequential", AllowedSchemes: defaultAllowedSchemes})
 
-		repo, goodRemote, _ := newTestRepoPair(t)
+		repo, _, goodRemote, _ := newTestRepoPair(t)
 		entries := []remoteEntry{
 			{name: "missing-remote"},
 			{name: goodRemote},
@@ -158,7 +158,7 @@ func TestRunSequential(t *testing.T) {
 	t.Run("warn continues through all remotes", func(t *testing.T) {
 		withConfig(t, &Config{OnFailure: "warn", PushStrategy: "sequential", AllowedSchemes: defaultAllowedSchemes})
 
-		repo, goodRemote, _ := newTestRepoPair(t)
+		repo, _, goodRemote, _ := newTestRepoPair(t)
 		entries := []remoteEntry{
 			{name: "missing-remote"},
 			{name: goodRemote},
@@ -179,7 +179,7 @@ func TestSyncAll(t *testing.T) {
 	t.Run("parallel strategy attempts every remote even under abort", func(t *testing.T) {
 		withConfig(t, &Config{OnFailure: "abort", PushStrategy: "parallel", AllowedSchemes: defaultAllowedSchemes})
 
-		repo, goodRemote, _ := newTestRepoPair(t)
+		repo, _, goodRemote, _ := newTestRepoPair(t)
 		entries := []remoteEntry{
 			{name: "missing-remote"},
 			{name: goodRemote},
@@ -195,7 +195,7 @@ func TestSyncAll(t *testing.T) {
 	t.Run("sequential strategy stops before later remotes under abort", func(t *testing.T) {
 		withConfig(t, &Config{OnFailure: "abort", PushStrategy: "sequential", AllowedSchemes: defaultAllowedSchemes})
 
-		repo, goodRemote, _ := newTestRepoPair(t)
+		repo, _, goodRemote, _ := newTestRepoPair(t)
 		entries := []remoteEntry{
 			{name: "missing-remote"},
 			{name: goodRemote},

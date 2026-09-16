@@ -207,3 +207,42 @@ func TestListRemotes(t *testing.T) {
 		assert.Nil(t, statuses)
 	})
 }
+
+// TestRemoteAddListRemoveRoundTrip verifies that add -> list -> remove leaves
+// no trace of the remote in either .gitremotes or .git/config.
+func TestRemoteAddListRemoveRoundTrip(t *testing.T) {
+	path := t.TempDir()
+	_, err := git.PlainInit(path, false)
+	require.NoError(t, err)
+
+	const name = "mirror"
+	const url = "https://example.com/user/mirror.git"
+
+	alreadyTracked, err := addRemote(path, name, url)
+	require.NoError(t, err)
+	require.False(t, alreadyTracked)
+
+	statuses, err := listRemotes(path)
+	require.NoError(t, err)
+	require.Len(t, statuses, 1)
+	assert.Equal(t, name, statuses[0].name)
+	assert.Equal(t, url, statuses[0].url)
+	assert.False(t, statuses[0].unregistered)
+
+	require.NoError(t, removeRemote(path, name))
+
+	statuses, err = listRemotes(path)
+	require.NoError(t, err)
+	assert.Empty(t, statuses)
+
+	entries, err := parseGitremotes(filepath.Join(path, ".gitremotes"))
+	require.NoError(t, err)
+	assert.Empty(t, entries)
+
+	repo, err := git.PlainOpen(path)
+	require.NoError(t, err)
+	cfg, err := repo.Config()
+	require.NoError(t, err)
+	_, stillRegistered := cfg.Remotes[name]
+	assert.False(t, stillRegistered)
+}

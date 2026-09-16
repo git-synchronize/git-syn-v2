@@ -26,4 +26,4 @@
 ## 5. Register and document
 
 - [x] 5.1 Register a `configCmd` parent and `configInitCmd` child in `cmd/root.go`
-- [ ] 5.2 Manually verify: missing config file applies defaults silently; invalid YAML prints an error and exits non-zero
+- [x] 5.2 Manually verify: missing config file applies defaults silently; invalid YAML prints an error and exits non-zero
