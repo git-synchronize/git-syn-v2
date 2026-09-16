@@ -2,14 +2,16 @@ services:
   git-serve:
     # Purpose-built nginx + git-http-backend image.
     # To upgrade: check https://hub.docker.com/r/cirocosta/gitserver-http/tags
-    image: cirocosta/gitserver-http:3
+    #
+    # NOTE: this image's entrypoint hardcodes its repo root to /var/lib/git
+    # and always exports all repositories (GIT_HTTP_EXPORT_ALL=true); it does
+    # not read any environment variables. The volume below is mounted at
+    # /var/lib/git to match, not at a configurable path.
+    image: cirocosta/gitserver-http:latest
     ports:
       - "80:80"
     volumes:
-      - git-data:/git
-    environment:
-      - GIT_HTTP_EXPORT_ALL=${GIT_HTTP_EXPORT_ALL:-1}
-      - GIT_PROJECT_ROOT=${GIT_PROJECT_ROOT:-/git}
+      - git-data:/var/lib/git
     restart: unless-stopped
 
 volumes:
