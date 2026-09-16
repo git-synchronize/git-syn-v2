@@ -48,4 +48,4 @@
 - [x] 8.1 Run `go test ./...` and confirm all tests pass with zero failures
 - [x] 8.2 Run `mise run check` (fmt + lint + test) and confirm clean output
 - [x] 8.3 Run `go tool cover -func` (or equivalent) and confirm `init.go`, `pre-push.go`, and `remote.go` no longer show 0%-covered business-logic functions
-- [ ] 8.4 Push a branch and confirm the new CI `test` job runs and passes on a non-`main` branch (requires pushing to the GitLab remote — left for the user to trigger and confirm)
+- [x] 8.4 Push a branch and confirm the new CI `test` job runs and passes on a non-`main` branch (confirmed: pipeline #42 on `expand-test-coverage` and #43 on `main` post-merge both succeeded)
