@@ -24,4 +24,4 @@
 
 ## 5. Documentation
 - [x] 5.1 Update `README.md` with a section describing the `daemon` command and example invocations
-- [ ] 5.2 Add a man page source entry for `git-syn-daemon(1)` in `doc/man/` if a man page generator is configured
+- [x] 5.2 Add a man page source entry for `git-syn-daemon(1)` in `doc/man/` if a man page generator is configured (no per-command generator exists; extended the daemon entry in the single consolidated `doc/man/git-syn.1.md` with its flags instead)

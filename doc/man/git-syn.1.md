@@ -1,6 +1,6 @@
 % git-syn(1)
 % Lucas Ramage
-% March 26, 2026
+% September 16, 2026
 
 # NAME
 
@@ -42,6 +42,10 @@ Git SYN is a command line extension for synchronizing remote git repositories. I
 **daemon**
 
 :   Run synchronization on a schedule.
+    Pushes to all remotes in .gitremotes at a fixed interval until interrupted.
+    Use `--interval` (e.g. `5m`, `1h`) to set the sync interval, overriding
+    the `sync_interval` value in the configuration file. Use `--once` to
+    run a single synchronization pass and exit instead of looping.
 
 **install**
 
