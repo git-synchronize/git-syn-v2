@@ -1,13 +1,14 @@
 services:
   git-serve:
-    # Purpose-built nginx + git-http-backend image.
-    # To upgrade: check https://hub.docker.com/r/cirocosta/gitserver-http/tags
+    # Custom image: Apache httpd + mod_cgid serving git-http-backend. This is
+    # git's own documented way to serve git repos over HTTP (see `git help
+    # http-backend`). See git-http/ for the Dockerfile.
     #
-    # NOTE: this image's entrypoint hardcodes its repo root to /var/lib/git
-    # and always exports all repositories (GIT_HTTP_EXPORT_ALL=true); it does
-    # not read any environment variables. The volume below is mounted at
-    # /var/lib/git to match, not at a configurable path.
-    image: cirocosta/gitserver-http:latest
+    # Built locally, not pulled from a registry -- there's no actively
+    # maintained public image for this that doesn't share the push-hanging
+    # bug this stack used to have when it ran on nginx+fcgiwrap instead
+    # (see git history for deploy/docker-compose/ for that story).
+    build: ./git-http
     ports:
       - "80:80"
     volumes:
