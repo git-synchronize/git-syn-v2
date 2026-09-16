@@ -5,14 +5,14 @@ Git SYN's purpose is disaster recovery and censorship resistance. Users need a s
 ## What Changes
 
 - Add `deploy/docker-compose/docker-compose.yml` with a single `git-serve` service:
-  - Builds a small custom image (`deploy/docker-compose/git-http/`) running Apache httpd with `mod_cgid`, serving `git-http-backend` (git's own documented way to serve repos over HTTP)
+  - Builds a small custom image (`deploy/docker-compose/git-http/`) running nginx in front of `git-http-backend`, connected by a small Go CGI bridge (`cgi-bridge/`) instead of fcgiwrap
   - Exposes port 80 (intended to sit behind a reverse proxy for TLS)
   - Mounts a named volume for repository storage
-- Add `deploy/docker-compose/README.md` with a quickstart (build and start the stack, create a bare repo as `www-data`, enable `http.receivepack`, add it as a git-syn remote)
+- Add `deploy/docker-compose/README.md` with a quickstart (build and start the stack, create a bare repo as the `nginx` user, enable `http.receivepack`, add it as a git-syn remote)
 
 Out of scope: TLS termination in compose (use a reverse proxy), web UI, authentication beyond git protocol basics.
 
-**Revision note**: the original design used a public `cirocosta/gitserver-http` image (nginx + fcgiwrap). Verifying it (`docker compose up`, clone, push) surfaced two config bugs (a nonexistent image tag, and env vars the image silently ignored) and, after fixing those, a structural one: `git push` reproducibly hung and failed with an nginx 504, fcgiwrap never responding to `git-receive-pack`. No actively maintained alternative HTTP git server image was found either; the few that exist share the same nginx+fcgiwrap+CGI architecture and the same risk. This change builds a custom image instead, on Apache + `mod_cgid` rather than nginx + fcgiwrap, avoiding that architecture entirely. Verified end to end: clone, push (both the system `git` client and `git-syn`'s own `go-git` HTTP transport), and a restart to confirm repository data persists.
+**Revision note**: the original design used a public `cirocosta/gitserver-http` image (nginx + fcgiwrap). Verifying it (`docker compose up`, clone, push) surfaced two config bugs (a nonexistent image tag, and env vars the image silently ignored) and, after fixing those, a structural one: `git push` reproducibly hung and failed with an nginx 504, fcgiwrap never responding to `git-receive-pack`. No actively maintained alternative HTTP git server image was found either. A first replacement built a custom Apache + `mod_cgid` image instead, which worked, but the actual requirement was to keep nginx, not switch web servers. Since nginx has no native CGI support and fcgiwrap was the specific thing that broke, this revision bridges nginx to `git-http-backend` with a small Go program using the standard `net/http/cgi` package instead of any FastCGI-family gateway (fcgiwrap or uwsgi's cgi plugin). Verified end to end: clone, push at several sizes (a small commit, 20MB, 100MB) via both the system `git` client and `git-syn`'s own `go-git` HTTP transport, and a restart to confirm repository data persists.
 
 ## Capabilities
 
@@ -26,6 +26,6 @@ Out of scope: TLS termination in compose (use a reverse proxy), web UI, authenti
 
 ## Impact
 
-- `deploy/docker-compose/`: `docker-compose.yml`, `README.md`, `git-http/` (Dockerfile, `httpd.conf`, `entrypoint.sh`)
-- No Go code changes
-- No new Go dependencies
+- `deploy/docker-compose/`: `docker-compose.yml`, `README.md`, `git-http/` (Dockerfile, `nginx.conf`, `entrypoint.sh`, `cgi-bridge/main.go` and its own `go.mod`)
+- No changes to git-syn's own Go module; `cgi-bridge` is a separate, standalone Go program built only inside the Docker image
+- No new Go dependencies (the bridge uses only the standard library)

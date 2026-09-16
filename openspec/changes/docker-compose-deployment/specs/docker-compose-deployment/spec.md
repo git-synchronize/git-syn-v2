@@ -11,6 +11,10 @@ The `deploy/docker-compose/` directory SHALL contain a `docker-compose.yml` that
 - **WHEN** a bare repository has been created on the server with `http.receivepack` enabled, and the user pushes to it over HTTP
 - **THEN** the push SHALL complete successfully and the commit SHALL be present in the server-side repository
 
+#### Scenario: Push succeeds at realistic sizes
+- **WHEN** the user pushes a commit containing tens of megabytes of new data
+- **THEN** the push SHALL complete successfully, not hang or fail with an error
+
 #### Scenario: Repository data persists across restarts
 - **WHEN** the stack is stopped and restarted
 - **THEN** repository data stored in the named volume SHALL persist

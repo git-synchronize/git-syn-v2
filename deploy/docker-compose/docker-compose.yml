@@ -1,13 +1,11 @@
 services:
   git-serve:
-    # Custom image: Apache httpd + mod_cgid serving git-http-backend. This is
-    # git's own documented way to serve git repos over HTTP (see `git help
-    # http-backend`). See git-http/ for the Dockerfile.
-    #
-    # Built locally, not pulled from a registry -- there's no actively
-    # maintained public image for this that doesn't share the push-hanging
-    # bug this stack used to have when it ran on nginx+fcgiwrap instead
-    # (see git history for deploy/docker-compose/ for that story).
+    # Custom image: nginx serving git-http-backend through a small Go CGI
+    # bridge (cgi-bridge/), not fcgiwrap. nginx has no native CGI support,
+    # and fcgiwrap -- the usual bridge -- is what made git push hang and
+    # 504 in an earlier version of this stack (see git history for
+    # deploy/docker-compose/ for that story). See git-http/ for the
+    # Dockerfile.
     build: ./git-http
     ports:
       - "80:80"
