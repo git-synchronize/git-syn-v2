@@ -1,12 +1,17 @@
 services:
   git-serve:
-    # Custom image: nginx serving git-http-backend through a small Go CGI
-    # bridge (cgi-bridge/), not fcgiwrap. nginx has no native CGI support,
-    # and fcgiwrap -- the usual bridge -- is what made git push hang and
-    # 504 in an earlier version of this stack (see git history for
-    # deploy/docker-compose/ for that story). See git-http/ for the
-    # Dockerfile.
-    build: ./git-http
+    # Custom image: nginx reverse-proxying to `git-syn serve`, which hosts
+    # git-http-backend directly (no separate bridge program -- see
+    # git-http/Dockerfile). nginx has no native CGI support of its own;
+    # fcgiwrap, the usual bridge, is what made git push hang and 504 in an
+    # earlier version of this stack (see git history for
+    # deploy/docker-compose/ for that story).
+    #
+    # Build context is the repo root, not git-http/, since git-syn's
+    # go.mod lives there.
+    build:
+      context: ../..
+      dockerfile: deploy/docker-compose/git-http/Dockerfile
     ports:
       - "80:80"
     volumes:

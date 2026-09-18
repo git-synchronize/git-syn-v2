@@ -87,6 +87,7 @@ Remote git repository synchronization.
   install          install extension to repository
   pre-push         push to all remotes in .gitremotes
   remote           manage tracked remotes
+  serve            host git repositories over HTTP
   uninstall        remove extension from repository
 
 Git SYN online help: <https://gitlab.com/git-syn/git-syn>

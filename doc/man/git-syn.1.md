@@ -1,6 +1,6 @@
 % git-syn(1)
 % Lucas Ramage
-% September 16, 2026
+% September 18, 2026
 
 # NAME
 
@@ -61,6 +61,15 @@ Git SYN is a command line extension for synchronizing remote git repositories. I
 
 :   Manage tracked remotes.
     Subcommands: `add`, `remove`, `list`.
+
+**serve**
+
+:   Host git repositories over HTTP for clone and push.
+    Repositories must already exist under `--path` (create them with
+    `git init --bare`) and, to accept pushes, have `http.receivepack` set
+    to `true`. Use `--listen` (default `:8080`) to set the bind address.
+    There is no authentication; front this with a reverse proxy for TLS
+    or access control.
 
 **uninstall**
 

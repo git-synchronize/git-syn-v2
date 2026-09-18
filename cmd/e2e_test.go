@@ -4,13 +4,18 @@ Copyright © 2024-2026 Lucas Ramage <lucas.ramage@infinite-omicron.com>
 package cmd
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
+	"net"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"sync"
+	"syscall"
 	"testing"
+	"time"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/stretchr/testify/assert"
@@ -140,4 +145,66 @@ func TestInvalidYAMLConfigExitsNonZero(t *testing.T) {
 	require.True(t, errors.As(err, &exitErr))
 	assert.Equal(t, 1, exitErr.ExitCode())
 	assert.Contains(t, string(out), "error:")
+}
+
+// TestServeCommand verifies that `git-syn serve` hosts a real, working git
+// HTTP server: clone and push against it over a real TCP connection, then
+// confirm it shuts down cleanly on SIGTERM.
+func TestServeCommand(t *testing.T) {
+	binPath := buildGitSynBinary(t)
+
+	repoDir := t.TempDir()
+	bareRepoPath := filepath.Join(repoDir, "myrepo.git")
+
+	out, err := exec.Command("git", "init", "--bare", bareRepoPath).CombinedOutput()
+	require.NoError(t, err, "git init --bare failed: %s", out)
+	out, err = exec.Command("git", "-C", bareRepoPath, "config", "http.receivepack", "true").CombinedOutput()
+	require.NoError(t, err, "git config http.receivepack failed: %s", out)
+
+	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	require.NoError(t, err)
+	addr := ln.Addr().String()
+	require.NoError(t, ln.Close())
+	baseURL := "http://" + addr
+
+	serveCmd := exec.Command(binPath, "serve", "--path", repoDir, "--listen", addr)
+	var serveOutput bytes.Buffer
+	serveCmd.Stdout = &serveOutput
+	serveCmd.Stderr = &serveOutput
+	require.NoError(t, serveCmd.Start())
+	t.Cleanup(func() {
+		_ = serveCmd.Process.Kill()
+		_ = serveCmd.Wait()
+	})
+
+	require.Eventually(t, func() bool {
+		resp, err := http.Get(baseURL + "/myrepo.git/info/refs?service=git-upload-pack")
+		if err != nil {
+			return false
+		}
+		defer resp.Body.Close()
+		return resp.StatusCode == http.StatusOK
+	}, 5*time.Second, 50*time.Millisecond, "server did not become ready: %s", &serveOutput)
+
+	cloneDir := filepath.Join(t.TempDir(), "cloned")
+	out, err = exec.Command("git", "clone", baseURL+"/myrepo.git", cloneDir).CombinedOutput()
+	require.NoError(t, err, "git clone failed: %s", out)
+
+	require.NoError(t, os.WriteFile(filepath.Join(cloneDir, "f.txt"), []byte("hi\n"), 0644))
+	out, err = exec.Command("git", "-C", cloneDir, "add", "f.txt").CombinedOutput()
+	require.NoError(t, err, "git add failed: %s", out)
+	out, err = exec.Command("git", "-c", "user.email=test@example.com", "-c", "user.name=Test", "-C", cloneDir, "commit", "-q", "-m", "test commit").CombinedOutput()
+	require.NoError(t, err, "git commit failed: %s", out)
+	out, err = exec.Command("git", "-C", cloneDir, "push", "origin", "HEAD:master").CombinedOutput()
+	require.NoError(t, err, "git push failed: %s", out)
+
+	require.NoError(t, serveCmd.Process.Signal(syscall.SIGTERM))
+	waitDone := make(chan error, 1)
+	go func() { waitDone <- serveCmd.Wait() }()
+	select {
+	case err := <-waitDone:
+		assert.NoError(t, err, "git-syn serve should exit zero on SIGTERM: %s", &serveOutput)
+	case <-time.After(5 * time.Second):
+		t.Fatalf("git-syn serve did not exit within 5s of SIGTERM: %s", &serveOutput)
+	}
 }

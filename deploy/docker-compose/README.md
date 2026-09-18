@@ -2,17 +2,17 @@
 
 Runs a self-hosted git HTTP server for use as a git-syn mirror target. The
 server is a small custom image (`git-http/`, built locally by this compose
-file): nginx in front of `git-http-backend`, connected by a small Go program
-(`cgi-bridge/`) that runs `git-http-backend` as a CGI process and exposes it
-over plain HTTP for nginx to reverse-proxy to.
+file): nginx in front of `git-syn serve`, which hosts `git-http-backend`
+directly and exposes it over plain HTTP for nginx to reverse-proxy to.
 
 nginx has no native CGI support, so it needs a bridge to talk to
 `git-http-backend`. The usual bridge is `fcgiwrap`, which is what an earlier
 version of this stack used (via the third-party `cirocosta/gitserver-http`
 image) and what made `git push` hang and fail with an nginx 504 in every
-test (fcgiwrap never responded to `git-receive-pack`). `cgi-bridge` sidesteps
-the FastCGI protocol entirely: nginx speaks ordinary HTTP/1.1 to it, and it
-uses Go's standard `net/http/cgi` package to talk to `git-http-backend`.
+test (fcgiwrap never responded to `git-receive-pack`). `git-syn serve`
+sidesteps the FastCGI protocol entirely: nginx speaks ordinary HTTP/1.1 to
+it, and it uses Go's standard `net/http/cgi` package to talk to
+`git-http-backend`.
 
 ## Quickstart
 
